@@ -1,0 +1,41 @@
+video:
+    - logn videos (moveis)
+    - short videos
+    - playlists ==> list of movies
+    - seasons ==> playlists of playlists
+
+
+- category
+   - action moveis, comedy, drama,
+
+- tags:
+   - action, comedy, action-comedy, drama, live studio audience.
+
+- User rating.
+    - 1 - 5 starts rating.
+    - prepare system for ML
+
+
+- search:
+    1- by title, desc, tags
+
+
+# future
+- user registration
+- JS libs for frontend (react, vue, bootstrap,
+- django rest framework for API.
+- recommender
+    - collaborative filtering with ML
+
+- elasticsearch
+- Video alanytics and watch histroy
+- video hosts api
+    - vimeo, youtube
+    - open source options (ffmpeg)
+
+- api driven video details.
+    - cast members(actors, directors).
+    - release year.
+
+- payments integrations
+   - stripe, braintree, Crypto
