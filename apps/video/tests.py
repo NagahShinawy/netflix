@@ -17,18 +17,19 @@ class VideoModelTestCase(TestCase):
     test video functionality
     """
 
-    VIDEOS_COUNT = 1
+    VIDEOS_COUNT = 3
     NO_VIDEOS = 0
+    UPDATED_TITLE = "updated title"
 
     def setUp(self) -> None:
         """
         create single video obj to test with
         :return:
         """
-        obj = Video.objects.create(**video)
-        return obj
+        for _ in range(self.VIDEOS_COUNT):
+            Video.objects.create(**video)
 
-    def test_create_video(self):
+    def test_create_videos(self):
         """
         test video creation
         :return:
@@ -42,7 +43,7 @@ class VideoModelTestCase(TestCase):
         :return:
         """
         title = "this is video"
-        obj = Video.objects.first()
+        obj = self.created_video
         self.assertEqual(obj.title, title)
 
     def test_video_description(self):
@@ -78,4 +79,10 @@ class VideoModelTestCase(TestCase):
         """
         self.created_video.delete()
         qs = Video.objects.all()  # pylint: disable=C0103
-        self.assertEqual(qs.count(), self.NO_VIDEOS)
+        self.assertEqual(qs.count(), self.VIDEOS_COUNT - 1)
+
+    def test_update_video(self):
+        obj = self.created_video
+        obj.title = self.UPDATED_TITLE
+        obj.save()
+        self.assertEqual(self.created_video.title, self.UPDATED_TITLE)

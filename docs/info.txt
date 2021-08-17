@@ -5,3 +5,16 @@
 
 ========================================================
 3- python manage.py test appname
+
+
+========================================================
+4- create obj on the test db, on the fly, then destroy it after test finished
+
+setUp(self): ==> use it to create your test data that you will work with over the all testcases methods.
+
+# at the beginning , it creates test db for us. not used django db. it creates its isolated db
+- Creating test database for alias 'default'...
+
+
+# after finishing the tests
+- Destroying test database for alias 'default'...
