@@ -4,8 +4,7 @@ from .models import Video
 video = {
     "title": "this is video",
     "description": "video desc",
-    "video_id": "this is video id"
-
+    "video_id": "this is video id",
 }
 
 
@@ -45,4 +44,3 @@ class VideoModelTestCase(TestCase):
         self.created_video.delete()
         qs = Video.objects.all()
         self.assertEqual(qs.count(), self.NO_VIDEOS)
-
