@@ -4,3 +4,4 @@
 2 - echo  "django>=3.2,<4.0" > requirements.txt
 
 ========================================================
+3- python manage.py test appname

@@ -1,12 +1,11 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Video(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField(max_length=225)
-    slug = models.SlugField(blank=True, null=True)
+    description = models.TextField(max_length=225, null=True, blank=True)
+    slug = models.SlugField(null=True, blank=True)
+    video_id = models.CharField(max_length=225)
 
     def __str__(self):
         id_ = self.id
