@@ -12,9 +12,20 @@
 
 setUp(self): ==> use it to create your test data that you will work with over the all testcases methods.
 
-# at the beginning , it creates test db for us. not used django db. it creates its isolated db
+# at the beginning , it creates test db for us. not used django db. it creates its isolated db with name (test_netflix)
 - Creating test database for alias 'default'...
 
 
 # after finishing the tests
 - Destroying test database for alias 'default'...
+
+========================================================
+why test are important ?
+to make sure every thing works even something else change. [integrity]. if the system is very big
+
+========================================================
+1- migrations: looks for changes on models
+    migrations files(come after makemigrations): gives us working history of changes happened on the model. it just likes reference for us.
+2- migrate: actually commit changes to the db.
+
+==> ready for changes with makemigrations. ==> actually change with migrate ==> you can run tests on models

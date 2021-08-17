@@ -14,3 +14,5 @@ class Video(models.Model):
 
     class Meta:
         ordering = ["-id"]
+        verbose_name = "Movie Video"  # add
+        verbose_name_plural = "Netflix Videos"  #
