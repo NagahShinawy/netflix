@@ -47,5 +47,5 @@ class PublishedVideoProxy(Video):
 
     class Meta:
         proxy = True
-        verbose_name = "Publish Video"
+        verbose_name = "Published Video"
         verbose_name_plural = "Published Videos"
