@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Video, VideoProxy, FastEditVideoProxy
+from .models import Video, VideoProxy, FastEditVideoProxy, PublishedVideoProxy
 
 
 @admin.register(Video)  # table show
@@ -16,6 +16,12 @@ class FastEditVideoProxyModelAdmin(admin.ModelAdmin):
     list_editable = ("title", "slug")
     list_filter = ("title", "slug")
     list_per_page = 3
+
+
+@admin.register(PublishedVideoProxy)
+class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "title")
+    list_display_links = ("id", "title")
 
 
 admin.site.register(VideoProxy)  # basic  video show
