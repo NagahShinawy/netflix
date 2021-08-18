@@ -37,5 +37,3 @@ class FastEditVideoProxy(Video):
         ordering = ["title"]
         verbose_name = "Editable Video"  # add btn
         verbose_name_plural = "Fast Edit Videos"  # left side view
-
-

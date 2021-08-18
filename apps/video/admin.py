@@ -18,5 +18,7 @@ class FastEditVideoProxyModelAdmin(admin.ModelAdmin):
     list_per_page = 3
 
 
-admin.site.register(VideoProxy)
-admin.site.register(FastEditVideoProxy, FastEditVideoProxyModelAdmin)
+admin.site.register(VideoProxy)  # basic  video show
+admin.site.register(
+    FastEditVideoProxy, FastEditVideoProxyModelAdmin
+)  # editable video show
