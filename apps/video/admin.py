@@ -11,9 +11,9 @@ class VideoModelAdmin(admin.ModelAdmin):
 
 
 class FastEditVideoProxyModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "video_id", "title", "slug")
+    list_display = ("id", "video_id", "title", "slug", "is_published")
     list_display_links = ("id", "video_id")
-    list_editable = ("title", "slug")
+    list_editable = ("title", "slug", "is_published")
     list_filter = ("title", "slug")
     list_per_page = 3
 
