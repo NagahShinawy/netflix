@@ -45,7 +45,3 @@ class PublishedVideoProxy(Video):
         proxy = True
         verbose_name = "Publish Video"
         verbose_name_plural = "Published Videos"
-
-
-class H(models.Model):
-    name = models.CharField(max_length=10)
