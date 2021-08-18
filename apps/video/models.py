@@ -1,4 +1,5 @@
 from django.db import models
+from apps.core.managers import PublishedVideoManager
 
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/
@@ -41,6 +42,9 @@ class FastEditVideoProxy(Video):
 
 
 class PublishedVideoProxy(Video):
+
+    objects = PublishedVideoManager()
+
     class Meta:
         proxy = True
         verbose_name = "Publish Video"
