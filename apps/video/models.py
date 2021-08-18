@@ -28,7 +28,7 @@ class VideoProxy(Video):
         verbose_name_plural = "Basic Video Title Show"  #
 
     def __str__(self):
-        return f"{self.__class__.__name__}[{self.title}]"
+        return f"[{self.title}]"
 
 
 class FastEditVideoProxy(Video):
