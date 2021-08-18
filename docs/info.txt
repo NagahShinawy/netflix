@@ -79,3 +79,9 @@ Instead, we could change some of the parent model’s behavior,
 maybe by adding a method, property, or model manager.
 This is where proxy models shine.
 Proxy models allow us to change the Python behavior of a model without changing the database.
+
+=======================================================================================================================
+1- custom admin model with 3 ways
+2- how to custom qs in admin
+3- how to add list field does not exist on the model fields
+

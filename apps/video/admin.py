@@ -5,9 +5,14 @@ from .models import Video, PublishedVideoProxy, NotPublishedVideoProxy
 
 @admin.register(Video)  # table show
 class VideoModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "video_id", "title", "slug")
+    list_display = ("id", "video_id", "title", "slug", "active")
     list_display_links = ("id", "video_id", "title")
+    list_filter = ("is_active",)
     list_per_page = 3
+
+    @staticmethod
+    def active(video):  # Video Model instance
+        return video.is_published
 
 
 class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
@@ -27,4 +32,10 @@ class NotPublishedVideoProxyModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(PublishedVideoProxy, PublishedVideoProxyModelAdmin)  # basic show
-admin.site.register(NotPublishedVideoProxy, NotPublishedVideoProxyModelAdmin)  # basic show
+admin.site.register(
+    NotPublishedVideoProxy, NotPublishedVideoProxyModelAdmin
+)  # basic show
+
+# before
+# admin.site.register(PublishedVideoProxy)  # basic show
+# admin.site.register(NotPublishedVideoProxy)  # basic show
