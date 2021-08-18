@@ -18,9 +18,24 @@ class Video(models.Model):
     class Meta:
         ordering = ["-id"]
         verbose_name = "Movie Video"  # add
-        verbose_name_plural = "Netflix Videos"  #
+        verbose_name_plural = "Table Show Videos"  #
 
 
 class VideoProxy(Video):
     class Meta:
-        proxy = True  # not created db table. it just proxy
+        proxy = True  # not created db table. it just proxy [check proxy-model branch]
+        verbose_name = "Movie Video"  # add
+        verbose_name_plural = "Basic Video Title Show"  #
+
+    def __str__(self):
+        return f"{self.__class__.__name__}[{self.title}]"
+
+
+class FastEditVideoProxy(Video):
+    class Meta:
+        proxy = True  # not created db table. it just proxy [check proxy-model branch]
+        ordering = ["title"]
+        verbose_name = "Editable Video"  # add btn
+        verbose_name_plural = "Fast Edit Videos"  # left side view
+
+
