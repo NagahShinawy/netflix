@@ -16,11 +16,13 @@ class Video(models.Model):
         return f"{id_}-{self.slug}" if self.slug else f"{id_}-{self.title}"
 
     class Meta:
-        ordering = ["-id"]
-        verbose_name = "Movie Video"  # add
-        verbose_name_plural = "Netflix Videos"  #
+        ordering = ["id"]
+        verbose_name = "Video"  # add
+        verbose_name_plural = "Table Videos Show"  #
 
 
 class VideoProxy(Video):
     class Meta:
         proxy = True  # not created db table. it just proxy
+        verbose_name = "Video"
+        verbose_name_plural = "Basic Videos Show"
