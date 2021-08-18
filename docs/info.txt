@@ -29,3 +29,53 @@ to make sure every thing works even something else change. [integrity]. if the s
 2- migrate: actually commit changes to the db.
 
 ==> ready for changes with makemigrations. ==> actually change with migrate ==> you can run tests on models
+
+========================================================================================================================
+- proxy models:
+- multi-table inheritance
+
+
+https://www.kite.com/blog/python/advanced-django-models-python-overview/
+
+1- django multi-table inheritance
+   = it creates db table of subclass and refer to it by parent class pk.
+   = means when add new record to subclass model . it saves to parent class.
+   = pk of record at the child class is the same of parent pk model class
+
+
+2- if data changed on one table it reflects on the other, because it is the same obj.
+
+3- relationships is one2one
+
+
+4- cols in child class are:  ==> id, id_ptr_id, col1, col2 where id = id_ptr_id
+
+
+class Vehicle(models.Model):
+    model = models.CharField(max_length=50)
+    manufacturer = models.CharField(max_length=80)
+    year = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.pk}-{self.model}"
+
+    class Meta:  # more/extra options
+        ordering = ["-id"]
+
+
+class Airplane(Vehicle):
+    is_cargo = models.BooleanField(default=False)
+    is_passenger = models.BooleanField(default=True)
+
+
+PROBLEMS: data duplicates [record exist at parent class and subclass]
+
+SOLVED BY USING proxy model
+
+
+
+In some use cases, we may not need to store extra data at all.
+Instead, we could change some of the parent model’s behavior,
+maybe by adding a method, property, or model manager.
+This is where proxy models shine.
+Proxy models allow us to change the Python behavior of a model without changing the database.
