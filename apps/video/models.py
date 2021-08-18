@@ -9,7 +9,6 @@ class Video(models.Model):
     description = models.TextField(max_length=225, null=True, blank=True)
     slug = models.SlugField(null=True, blank=True)
     video_id = models.CharField(max_length=225)
-    is_published = models.BooleanField(default=False)
     objects = models.manager
 
     def __str__(self):
