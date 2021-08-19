@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 
 class MedicalCenter(models.Model):
@@ -44,6 +45,7 @@ class Appointment(models.Model):
 
     def __str__(self):
         fullname = f"{self.first_name} {self.last_name}"
+        print(self.age)
         return fullname.title()
 
     @property
@@ -73,3 +75,10 @@ class Appointment(models.Model):
                 self.StatusChoices.EXPIRED,
             ]
         )
+
+    @property
+    def age(self):
+        if not self.dob:
+            return
+        now = timezone.now()
+        return now.year - self.dob.year - ((now.month, now.day) < (self.dob.month, self.dob.day))
