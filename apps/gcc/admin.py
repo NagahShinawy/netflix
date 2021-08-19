@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MedicalCenter, Appointment
+from .models import MedicalCenter, Appointment, AppointmentStatusHistory
 
 
 @admin.register(Appointment)
@@ -8,3 +8,4 @@ class AppointmentModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(MedicalCenter)
+admin.site.register(AppointmentStatusHistory)

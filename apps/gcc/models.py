@@ -82,3 +82,14 @@ class Appointment(models.Model):
             return
         now = timezone.now()
         return now.year - self.dob.year - ((now.month, now.day) < (self.dob.month, self.dob.day))
+
+
+class AppointmentStatusHistory(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name="status_history")
+    timestamp = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=56, choices=Appointment.StatusChoices.choices)
+    # raw username here to save history in case of user instance deletion
+    username = models.CharField(max_length=150, blank=True)
+
+    def __str__(self):
+        return f"{self.status}: {self.timestamp}"
