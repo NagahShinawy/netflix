@@ -38,14 +38,13 @@ class Appointment(models.Model):
     )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    dob = models.DateField()
+    dob = models.DateField(verbose_name=_("Date of birth"))
     status = models.CharField(
         max_length=56, default=StatusChoices.NEW, choices=StatusChoices.choices
     )
 
     def __str__(self):
         fullname = f"{self.first_name} {self.last_name}"
-        print(self.age)
         return fullname.title()
 
     @property
@@ -81,11 +80,29 @@ class Appointment(models.Model):
         if not self.dob:
             return
         now = timezone.now()
-        return now.year - self.dob.year - ((now.month, now.day) < (self.dob.month, self.dob.day))
+        return (
+            now.year
+            - self.dob.year
+            - ((now.month, now.day) < (self.dob.month, self.dob.day))
+        )
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        super(Appointment, self).save(
+            force_insert=False, force_update=False, using=None, update_fields=None
+        )
+        AppointmentStatusHistory.objects.create(
+            appointment=self,
+            timestamp=timezone.now(),
+            status=self.status,
+        )
 
 
 class AppointmentStatusHistory(models.Model):
-    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, related_name="status_history")
+    appointment = models.ForeignKey(
+        Appointment, on_delete=models.CASCADE, related_name="status_history"
+    )
     timestamp = models.DateTimeField(default=timezone.now)
     status = models.CharField(max_length=56, choices=Appointment.StatusChoices.choices)
     # raw username here to save history in case of user instance deletion
