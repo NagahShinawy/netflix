@@ -41,3 +41,19 @@ class Appointment(models.Model):
     def __str__(self):
         fullname = f"{self.first_name} {self.last_name}"
         return fullname.title()
+
+    @property
+    def is_expired(self):
+        return self.status == self.StatusChoices.EXPIRED
+
+    @property
+    def is_new(self):
+        return self.status == self.StatusChoices.NEW
+
+    @property
+    def is_fit(self):
+        return self.status == self.StatusChoices.FIT
+
+    @property
+    def is_unfit(self):
+        return self.status == self.StatusChoices.UNFIT
