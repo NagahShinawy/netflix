@@ -80,6 +80,8 @@ maybe by adding a method, property, or model manager.
 This is where proxy models shine.
 Proxy models allow us to change the Python behavior of a model without changing the database.
 
+proxy models: manage entire system
+
 =======================================================================================================================
 1- custom admin model with 3 ways
 2- how to custom qs in admin

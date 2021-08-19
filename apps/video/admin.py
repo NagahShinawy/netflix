@@ -12,16 +12,12 @@ class VideoModelAdmin(admin.ModelAdmin):
     list_per_page = 3
     save_on_top = True  # btn save on top
 
-    # @staticmethod
-    # def active(video):  # Video Model instance
-    #     return video.is_published
-
 
 class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
     save_on_top = True
 
     class Meta:
-        model = PublishedVideoProxy
+        model = PublishedVideoProxy  # optional
 
     def get_queryset(self, request):
         return PublishedVideoProxy.objects.filter(is_active=True)
@@ -31,7 +27,7 @@ class NotPublishedVideoProxyModelAdmin(admin.ModelAdmin):
     save_on_top = True
 
     class Meta:
-        model = NotPublishedVideoProxy
+        model = NotPublishedVideoProxy  # optional
 
     def get_queryset(self, request):
         return NotPublishedVideoProxy.objects.filter(is_active=False)
