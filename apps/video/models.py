@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/
@@ -10,6 +11,7 @@ class Video(models.Model):
     slug = models.SlugField(null=True, blank=True)
     video_id = models.CharField(max_length=225, default="id#")
     is_active = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         id_ = self.id

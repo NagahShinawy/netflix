@@ -85,3 +85,7 @@ Proxy models allow us to change the Python behavior of a model without changing 
 2- how to custom qs in admin
 3- how to add list field does not exist on the model fields
 
+
+================================
+
+pip install django-daterange-filter
