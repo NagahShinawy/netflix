@@ -10,6 +10,7 @@ class VideoModelAdmin(admin.ModelAdmin):
     list_display_links = ("id", "video_id", "title")
     list_filter = ("is_active",)
     list_per_page = 3
+    save_on_top = True  # btn save on top
 
     # @staticmethod
     # def active(video):  # Video Model instance
@@ -17,6 +18,8 @@ class VideoModelAdmin(admin.ModelAdmin):
 
 
 class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
+    save_on_top = True
+
     class Meta:
         model = PublishedVideoProxy
 
@@ -25,6 +28,8 @@ class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
 
 
 class NotPublishedVideoProxyModelAdmin(admin.ModelAdmin):
+    save_on_top = True
+
     class Meta:
         model = NotPublishedVideoProxy
 
