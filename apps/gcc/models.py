@@ -57,3 +57,13 @@ class Appointment(models.Model):
     @property
     def is_unfit(self):
         return self.status == self.StatusChoices.UNFIT
+
+    @property
+    def can_be_printed(self):
+        return self.status not in (
+            self.StatusChoices.NEW,
+            self.StatusChoices.IN_PROGRESS,
+            self.StatusChoices.SENT_FOR_APPROVAL,
+            self.StatusChoices.RETURNED,
+        )
+
