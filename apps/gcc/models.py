@@ -32,11 +32,15 @@ class Appointment(models.Model):
     # You can not delete medical center unless you delete protected related objs first
     # suppose we have 3 appointments at medical center 'german hospital', so you can not delete 'german hospital'
     # unless you delete all objs [ 3 appointments ] related to that hospital 'german hospital (FK)'
-    medical_center = models.ForeignKey("MedicalCenter", on_delete=models.PROTECT, null=True)
+    medical_center = models.ForeignKey(
+        "MedicalCenter", on_delete=models.PROTECT, null=True
+    )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     dob = models.DateField()
-    status = models.CharField(max_length=56, default=StatusChoices.NEW, choices=StatusChoices.choices)
+    status = models.CharField(
+        max_length=56, default=StatusChoices.NEW, choices=StatusChoices.choices
+    )
 
     def __str__(self):
         fullname = f"{self.first_name} {self.last_name}"
@@ -60,10 +64,12 @@ class Appointment(models.Model):
 
     @property
     def can_be_printed(self):
-        return self.status not in (
-            self.StatusChoices.NEW,
-            self.StatusChoices.IN_PROGRESS,
-            self.StatusChoices.SENT_FOR_APPROVAL,
-            self.StatusChoices.RETURNED,
+        return any(
+            [
+                self.StatusChoices.FIT,
+                self.StatusChoices.UNFIT,
+                self.StatusChoices.REJECTED,
+                self.StatusChoices.REPORTED_AS_UNFIT,
+                self.StatusChoices.EXPIRED,
+            ]
         )
-
