@@ -1,9 +1,12 @@
+import logging
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/
+
+logger = logging.getLogger(__name__)
 
 
 class Video(models.Model):
@@ -23,6 +26,9 @@ class Video(models.Model):
     )
     is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    updated = models.DateTimeField(
+        auto_now=True, verbose_name=_("Updated at")
+    )  # last save
     state = models.CharField(
         max_length=2, choices=VideoStateOptions.choices, default=VideoStateOptions.DRAFT
     )
@@ -40,10 +46,18 @@ class Video(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if self.state == self.VideoStateOptions.PUBLISHED and self.published_timestamp is None:
+        if (
+            self.state == self.VideoStateOptions.PUBLISHED
+            and self.published_timestamp is None
+        ):
             self.published_timestamp = timezone.now()
+
         elif self.state == self.VideoStateOptions.DRAFT:
             self.published_timestamp = None
+
+        logger.info(
+            f"Update 'published_timestamp' for video <{self.id}-{self.title}> to <{self.published_timestamp}>"
+        )
 
         return super(Video, self).save(*args, **kwargs)
 

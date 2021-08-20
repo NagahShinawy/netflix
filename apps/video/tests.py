@@ -118,9 +118,7 @@ class VideoModelTestCase(TestCase):
         now = timezone.now()
         video.update({"state": Video.VideoStateOptions.PUBLISHED})
         Video.objects.create(**video)
-        qs = Video.objects.filter(published_timestamp__lte=now, state=Video.VideoStateOptions.PUBLISHED)
+        qs = Video.objects.filter(
+            published_timestamp__lte=now, state=Video.VideoStateOptions.PUBLISHED
+        )
         self.assertTrue(qs.exists())
-
-
-
-

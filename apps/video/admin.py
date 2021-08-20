@@ -5,8 +5,19 @@ from .models import Video, PublishedVideoProxy, NotPublishedVideoProxy
 
 @admin.register(Video)  # table show
 class VideoModelAdmin(admin.ModelAdmin):
-    date_hierarchy = 'created'  # date filtration
-    list_display = ("id", "video_id", "state", "title", "slug", "is_published", "is_active", "published_timestamp")
+    date_hierarchy = "created"  # date filtration
+    list_display = (
+        "id",
+        "video_id",
+        "state",
+        "title",
+        "slug",
+        "is_published",
+        "is_active",
+        "published_timestamp",
+        "created",
+        "updated",
+    )
     list_display_links = ("id", "video_id", "title")
     list_filter = ("is_active", "state")
     readonly_fields = ["id", "is_published", "published_timestamp"]
