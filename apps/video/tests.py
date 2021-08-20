@@ -4,6 +4,7 @@ test cases for video model
 
 from django.utils import timezone
 from django.test import TestCase
+from django.utils.text import slugify
 from .models import Video
 
 video = {
@@ -120,3 +121,9 @@ class VideoModelTestCase(TestCase):
             published_timestamp__lte=now, state=Video.VideoStateOptions.PUBLISHED
         )
         self.assertTrue(qs.exists())
+
+    def test_slug(self):
+        obj = Video.objects.first()
+        test_slug = slugify(obj.title)
+        self.assertEqual(test_slug, obj.slug)
+
