@@ -90,10 +90,18 @@ class VideoModelTestCase(TestCase):
         self.assertEqual(self.created_video.title, self.UPDATED_TITLE)
 
     def test_draft_case(self):
+        """
+        test for draft video case
+        :return:
+        """
         qs = Video.objects.filter(state=Video.VideoStateOptions.DRAFT)
         self.assertEqual(qs.count(), self.VIDEOS_COUNT)
 
     def test_published_and_not_published(self):
+        """
+        test for published and not_published videos
+        :return:
+        """
         obj = Video.objects.first()
         obj.state = Video.VideoStateOptions.PUBLISHED
         obj.save()
@@ -101,6 +109,18 @@ class VideoModelTestCase(TestCase):
         not_published = Video.objects.exclude(state=Video.VideoStateOptions.PUBLISHED)
         self.assertEqual(published.count(), 1)
         self.assertEqual(not_published.count(), self.VIDEOS_COUNT - 1)
+
+    def test_published_timestamp(self):
+        """
+        test if state is PUBLISHED then update published_timestamp to now
+        :return:
+        """
+        now = timezone.now()
+        video.update({"state": Video.VideoStateOptions.PUBLISHED})
+        Video.objects.create(**video)
+        qs = Video.objects.filter(published_timestamp__lte=now, state=Video.VideoStateOptions.PUBLISHED)
+        self.assertTrue(qs.exists())
+
 
 
 
