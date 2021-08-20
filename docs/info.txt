@@ -100,3 +100,7 @@ auto_now=False  ==> for update
 
 
 ================================================================================================
+
+validations
+
+https://georgexyz.com/django-model-form-validation.html

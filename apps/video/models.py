@@ -6,7 +6,9 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from . import errors
 
-# https://www.kite.com/blog/python/advanced-django-models-python-overview/
+
+# https://www.kite.com/blog/python/advanced-django-models-python-overview/ (proxy models)
+# https://georgexyz.com/django-model-form-validation.html  (validations)
 
 logger = logging.getLogger(__name__)
 
@@ -23,9 +25,7 @@ class Video(models.Model):
         max_length=225, null=True, blank=True, verbose_name=_("Description")
     )
     slug = models.SlugField(null=True, blank=True, verbose_name=_("Slug"))
-    video_id = models.CharField(
-        max_length=225, default="id#", verbose_name=_("Media ID")
-    )
+    video_id = models.CharField(max_length=225, verbose_name=_("Media ID"), unique=True)
     is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
     updated = models.DateTimeField(

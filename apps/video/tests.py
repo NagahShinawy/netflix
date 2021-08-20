@@ -9,7 +9,6 @@ from .models import Video
 video = {
     "title": "this is video",
     "description": "video desc",
-    "video_id": "this is video id",
 }
 
 
@@ -28,8 +27,8 @@ class VideoModelTestCase(TestCase):
         create single video obj to test with
         :return:
         """
-        for _ in range(self.VIDEOS_COUNT):
-            Video.objects.create(**video)
+        for i in range(self.VIDEOS_COUNT):
+            Video.objects.create(**video, video_id=i)
 
     def test_create_videos(self):
         """
@@ -72,7 +71,7 @@ class VideoModelTestCase(TestCase):
         """
         video_id = "this is video id"
         obj = self.created_video
-        self.assertEqual(obj.video_id, video_id)
+        self.assertEqual(obj.video_id, "0")
 
     def test_delete_video(self):
         """
