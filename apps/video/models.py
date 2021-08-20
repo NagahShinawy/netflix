@@ -1,5 +1,6 @@
 import logging
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
@@ -45,6 +46,7 @@ class Video(models.Model):
         return self.is_active
 
     def save(self, *args, **kwargs):
+        video = f"{self.id}-{self.title}" if self.id else self.title
 
         if (
             self.state == self.VideoStateOptions.PUBLISHED
@@ -55,8 +57,13 @@ class Video(models.Model):
         elif self.state == self.VideoStateOptions.DRAFT:
             self.published_timestamp = None
 
+        if not self.slug:
+            logger.info(f"Update 'slug' for video <{video}> using title <{self.title}>")
+            self.slug = slugify(self.title)
+            logger.info(f"Updated 'slug' for video <{video}> to <{self.slug}>")
+
         logger.info(
-            f"Update 'published_timestamp' for video <{self.id}-{self.title}> to <{self.published_timestamp}>"
+            f"Update 'published_timestamp' for video <{video}> to <{self.published_timestamp}>"
         )
 
         return super(Video, self).save(*args, **kwargs)
