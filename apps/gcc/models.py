@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from .validators import is_future_date
 
 
 class MedicalCenter(models.Model):
@@ -38,7 +39,7 @@ class Appointment(models.Model):
     )
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    dob = models.DateField(verbose_name=_("Date of birth"))
+    dob = models.DateField(verbose_name=_("Date of birth"), validators=[is_future_date])
     status = models.CharField(
         max_length=56, default=StatusChoices.NEW, choices=StatusChoices.choices
     )
