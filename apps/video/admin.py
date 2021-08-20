@@ -6,11 +6,15 @@ from .models import Video, PublishedVideoProxy, NotPublishedVideoProxy
 @admin.register(Video)  # table show
 class VideoModelAdmin(admin.ModelAdmin):
     date_hierarchy = 'created'  # date filtration
-    list_display = ("id", "video_id", "title", "slug", "is_published")
+    list_display = ("id", "video_id", "title", "slug", "is_published", "is_active")
     list_display_links = ("id", "video_id", "title")
     list_filter = ("is_active",)
+    readonly_fields = ["id", "is_active", "is_published"]
     list_per_page = 3
     save_on_top = True  # btn save on top
+
+    # def active(self, video, *args, **kwargs):  # Video Model instance
+    #     return video.is_published
 
 
 class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
