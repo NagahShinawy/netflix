@@ -2,6 +2,7 @@
 test cases for video model
 """
 
+from django.utils import timezone
 from django.test import TestCase
 from .models import Video
 
@@ -20,6 +21,7 @@ class VideoModelTestCase(TestCase):
     VIDEOS_COUNT = 3
     NO_VIDEOS = 0
     UPDATED_TITLE = "updated title"
+    DRAFT = "DR"
 
     def setUp(self) -> None:
         """
@@ -86,3 +88,19 @@ class VideoModelTestCase(TestCase):
         obj.title = self.UPDATED_TITLE
         obj.save()
         self.assertEqual(self.created_video.title, self.UPDATED_TITLE)
+
+    def test_draft_case(self):
+        qs = Video.objects.filter(state=Video.VideoStateOptions.DRAFT)
+        self.assertEqual(qs.count(), self.VIDEOS_COUNT)
+
+    def test_published_and_not_published(self):
+        obj = Video.objects.first()
+        obj.state = Video.VideoStateOptions.PUBLISHED
+        obj.save()
+        published = Video.objects.filter(state=Video.VideoStateOptions.PUBLISHED)
+        not_published = Video.objects.exclude(state=Video.VideoStateOptions.PUBLISHED)
+        self.assertEqual(published.count(), 1)
+        self.assertEqual(not_published.count(), self.VIDEOS_COUNT - 1)
+
+
+
