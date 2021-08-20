@@ -3,7 +3,8 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-
+from django.core.exceptions import ValidationError
+from . import errors
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/
 
@@ -47,7 +48,6 @@ class Video(models.Model):
 
     def save(self, *args, **kwargs):
         video = f"{self.id}-{self.title}" if self.id else self.title
-
         if (
             self.state == self.VideoStateOptions.PUBLISHED
             and self.published_timestamp is None
@@ -56,17 +56,24 @@ class Video(models.Model):
 
         elif self.state == self.VideoStateOptions.DRAFT:
             self.published_timestamp = None
+        logger.info(
+            f"Update 'published_timestamp' for video <{video}> to <{self.published_timestamp}>"
+        )
 
+        self.update_slug(video)
+
+        return super(Video, self).save(*args, **kwargs)
+
+    def update_slug(self, video):
         if not self.slug:
             logger.info(f"Update 'slug' for video <{video}> using title <{self.title}>")
             self.slug = slugify(self.title)
             logger.info(f"Updated 'slug' for video <{video}> to <{self.slug}>")
 
-        logger.info(
-            f"Update 'published_timestamp' for video <{video}> to <{self.published_timestamp}>"
-        )
-
-        return super(Video, self).save(*args, **kwargs)
+    def clean(self):
+        if Video.objects.filter(title__iexact=self.title).exists():
+            raise ValidationError(errors.DUPLICATED_TITLE)
+        super(Video, self).clean()
 
     class Meta:
         ordering = ["id"]
