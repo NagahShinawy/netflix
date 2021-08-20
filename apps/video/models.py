@@ -1,17 +1,34 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/
 
 
 class Video(models.Model):
+    class VideoStateOptions(models.TextChoices):
+        PUBLISHED = "PU", "PUBLISH"  # db_value, user_display_value
+        DRAFT = "DR", "DRAFT"
+        UNLISTED = "UN", "Unlisted"
+        PRIVATE = "PR", "Private"
+
     title = models.CharField(max_length=100, verbose_name=_("Title"))
-    description = models.TextField(max_length=225, null=True, blank=True, verbose_name=_("Description"))
+    description = models.TextField(
+        max_length=225, null=True, blank=True, verbose_name=_("Description")
+    )
     slug = models.SlugField(null=True, blank=True, verbose_name=_("Slug"))
-    video_id = models.CharField(max_length=225, default="id#", verbose_name=_("Media ID"))
+    video_id = models.CharField(
+        max_length=225, default="id#", verbose_name=_("Media ID")
+    )
     is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    state = models.CharField(
+        max_length=2, choices=VideoStateOptions.choices, default=VideoStateOptions.DRAFT
+    )
+    published_timestamp = models.DateTimeField(
+        auto_now_add=False, auto_now=False, null=True, blank=True, editable=False
+    )
 
     def __str__(self):
         id_ = self.id
@@ -20,6 +37,15 @@ class Video(models.Model):
     @property
     def is_published(self):
         return self.is_active
+
+    def save(self, *args, **kwargs):
+
+        if self.state == self.VideoStateOptions.PUBLISHED and self.published_timestamp is None:
+            self.published_timestamp = timezone.now()
+        elif self.state == self.VideoStateOptions.DRAFT:
+            self.published_timestamp = None
+
+        return super(Video, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ["id"]
