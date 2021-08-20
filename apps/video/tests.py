@@ -69,7 +69,6 @@ class VideoModelTestCase(TestCase):
         test video id
         :return:
         """
-        video_id = "this is video id"
         obj = self.created_video
         self.assertEqual(obj.video_id, "0")
 
