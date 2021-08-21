@@ -1,8 +1,10 @@
+import datetime
 import logging
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from .managers import VideoManager
 from .errors import DuplicatedVideoTitle
@@ -20,6 +22,9 @@ class Video(models.Model):
         UNLISTED = "UN", "Unlisted"
         PRIVATE = "PR", "Private"
 
+    MIN_PRODUCTION_YEAR = 1930
+    max_production_year = datetime.datetime.now().year
+
     title = models.CharField(max_length=100, verbose_name=_("Title"))
     description = models.TextField(
         max_length=225, null=True, blank=True, verbose_name=_("Description")
@@ -36,6 +41,15 @@ class Video(models.Model):
     )
     published_timestamp = models.DateTimeField(
         auto_now_add=False, auto_now=False, null=True, blank=True, editable=False
+    )
+
+    year = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        validators=[
+            MinValueValidator(MIN_PRODUCTION_YEAR),
+            MaxValueValidator(max_production_year),
+        ],
     )
     objects = VideoManager()
 
