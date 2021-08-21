@@ -30,3 +30,9 @@ class VideoQuerySet(models.QuerySet):
 class VideoManager(models.Manager):
     def get_queryset(self):
         return VideoQuerySet(model=self.model, using=self._db)
+
+    # you can get published directly with manager or using qs
+    # 1- using manager  => Video.objects.published()
+    # 2- using Queryset ==> Video.objects.all().published()
+    def published(self):
+        return self.get_queryset().published()
