@@ -1,1 +1,4 @@
-DUPLICATED_TITLE = "Title Already Exists"
+
+class DuplicatedVideoTitle(Exception):
+    message = "Title Already Exists"
+    code = 1001

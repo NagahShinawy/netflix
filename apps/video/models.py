@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from . import errors
 from .managers import VideoManager
-
+from .errors import DuplicatedVideoTitle
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/ (proxy models)
 # https://georgexyz.com/django-model-form-validation.html  (validations)
@@ -76,8 +76,8 @@ class Video(models.Model):
             logger.info(f"Updated 'slug' for video <{video}> to <{self.slug}>")
 
     def clean(self):
-        if Video.objects.filter(title__iexact=self.title).exists() and not self.title:
-            raise ValidationError(errors.DUPLICATED_TITLE)
+        if Video.objects.filter(title__iexact=self.title).exists() and not self.slug:
+            raise ValidationError(DuplicatedVideoTitle.message)
         super(Video, self).clean()
 
     class Meta:
