@@ -130,8 +130,14 @@ class VideoModelTestCase(TestCase):
     def test_published_manager(self):
         video.update({"state": Video.VideoStateOptions.PUBLISHED})
         Video.objects.create(**video)
-        qs = Video.objects.all().published()
-        self.assertTrue(qs.exists())
+        published_qs = (
+            Video.objects.all().published()
+        )  # using custom qs 'VideoQuerySet' with method ''published in it
+        published_qs2 = (
+            Video.objects.published()
+        )  # using custom manager 'VideoManager' with method ''published in it
+        self.assertTrue(published_qs.exists())
+        self.assertEqual(published_qs.count(), published_qs2.count())
 
     def test_draft(self):
         qs = Video.objects.all().draft()
