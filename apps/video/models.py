@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 from . import errors
+from .managers import VideoManager
 
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/ (proxy models)
@@ -37,6 +38,7 @@ class Video(models.Model):
     published_timestamp = models.DateTimeField(
         auto_now_add=False, auto_now=False, null=True, blank=True, editable=False
     )
+    objects = VideoManager()
 
     def __str__(self):
         id_ = self.id
@@ -53,6 +55,9 @@ class Video(models.Model):
             and self.published_timestamp is None
         ):
             self.published_timestamp = timezone.now()
+
+        if self.state == self.VideoStateOptions.PUBLISHED and self.published_timestamp:
+            self.is_active = True
 
         elif self.state == self.VideoStateOptions.DRAFT:
             self.published_timestamp = None
@@ -71,7 +76,7 @@ class Video(models.Model):
             logger.info(f"Updated 'slug' for video <{video}> to <{self.slug}>")
 
     def clean(self):
-        if Video.objects.filter(title__iexact=self.title).exists():
+        if Video.objects.filter(title__iexact=self.title).exists() and not self.title:
             raise ValidationError(errors.DUPLICATED_TITLE)
         super(Video, self).clean()
 
@@ -93,3 +98,10 @@ class NotPublishedVideoProxy(Video):
         proxy = True  # not created db table. it just proxy
         verbose_name = "Video"
         verbose_name_plural = "Not Published Videos"
+
+
+class DraftVideoProxy(Video):
+    class Meta:
+        proxy = True
+        verbose_name = "Draft Video"
+        verbose_name_plural = "Draft Videos"

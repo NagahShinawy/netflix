@@ -5,12 +5,17 @@
 
 
 ==========================================================================================
-
-
+3- manager import errors
 
 
 ==========================================================================================
+4- when using
+# from django.apps import apps
+#
+# Video = apps.get_model('apps.video', 'Video')
+this error happens:
 
+    django.core.exceptions.AppRegistryNotReady: Models aren't loaded yet
 
 
 

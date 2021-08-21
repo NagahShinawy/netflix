@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Video, PublishedVideoProxy, NotPublishedVideoProxy
+from .models import Video, PublishedVideoProxy, NotPublishedVideoProxy, DraftVideoProxy
 
 
 @admin.register(Video)  # table show
@@ -48,11 +48,20 @@ class NotPublishedVideoProxyModelAdmin(admin.ModelAdmin):
         return NotPublishedVideoProxy.objects.filter(is_active=False)
 
 
+class DraftVideoProxyModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "title")
+    readonly_fields = ("id", "published_timestamp")
+
+    def get_queryset(self, request):
+        return DraftVideoProxy.objects.all().draft()
+
+
 admin.site.register(PublishedVideoProxy, PublishedVideoProxyModelAdmin)  # basic show
 admin.site.register(
     NotPublishedVideoProxy, NotPublishedVideoProxyModelAdmin
 )  # basic show
 
+admin.site.register(DraftVideoProxy, DraftVideoProxyModelAdmin)
 # before
 # admin.site.register(PublishedVideoProxy)  # basic show
 # admin.site.register(NotPublishedVideoProxy)  # basic show

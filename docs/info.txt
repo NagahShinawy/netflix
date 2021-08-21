@@ -104,3 +104,17 @@ auto_now=False  ==> for update
 validations
 
 https://georgexyz.com/django-model-form-validation.html
+
+================================================================================================
+1- objects = VideoManager()  ==> return qs using method get_queryset()
+2- get_queryset method uses custom VideoQuerySet to return qs
+3- VideoQuerySet has method of published to filter published videos
+
+Video.objects.all().published()
+
+==================================
+objects = VideoManager()
+
+1- Video.objects ==> calls get_queryset() method at VideoManager
+2- get_queryset return VideoQuerySet obj
+3- VideoQuerySet is qs has custom methods [published, draft, ...]
