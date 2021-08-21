@@ -1,14 +1,10 @@
-from datetime import datetime
-from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
-class MaxYearValidator:
+class MaxYearValidator(MaxValueValidator):
+    message = f"Video Production Year Can Not Be In The Future. Max Is '%(limit_value)s'. Given '%(show_value)s'"
 
-    message = "Video Production Year Can Not Be in The Future"
 
-    def __call__(self, year: int):
-        if year > datetime.now().year:
-            raise ValidationError(self.message)
-        return year
-
+class MinYearValidator(MinValueValidator):
+    message = f"Video Production Year Is Very Old. Min is '%(limit_value)s'. Given '%(show_value)s'"
 

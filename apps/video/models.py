@@ -4,9 +4,9 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ValidationError
 from .managers import VideoManager
+from .validators import MinYearValidator, MaxYearValidator
 from .errors import DuplicatedVideoTitle
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/ (proxy models)
@@ -22,8 +22,9 @@ class Video(models.Model):
         UNLISTED = "UN", "Unlisted"
         PRIVATE = "PR", "Private"
 
-    MIN_PRODUCTION_YEAR = 1930
-    max_production_year = datetime.datetime.now().year
+    class Year:
+        MIN = 1930
+        max_ = datetime.datetime.now().year
 
     title = models.CharField(max_length=100, verbose_name=_("Title"))
     description = models.TextField(
@@ -47,8 +48,8 @@ class Video(models.Model):
         null=True,
         blank=True,
         validators=[
-            MinValueValidator(MIN_PRODUCTION_YEAR),
-            MaxValueValidator(max_production_year),
+            MinYearValidator(Year.MIN),
+            MaxYearValidator(Year.max_),
         ],
     )
     objects = VideoManager()
