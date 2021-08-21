@@ -4,7 +4,6 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from . import errors
 from .managers import VideoManager
 from .errors import DuplicatedVideoTitle
 
@@ -84,24 +83,3 @@ class Video(models.Model):
         ordering = ["id"]
         verbose_name = "Video"  # add
         verbose_name_plural = "Table Videos"  #
-
-
-class PublishedVideoProxy(Video):
-    class Meta:
-        proxy = True  # not created db table. it just proxy
-        verbose_name = "Video"
-        verbose_name_plural = "Published Videos"
-
-
-class NotPublishedVideoProxy(Video):
-    class Meta:
-        proxy = True  # not created db table. it just proxy
-        verbose_name = "Video"
-        verbose_name_plural = "Not Published Videos"
-
-
-class DraftVideoProxy(Video):
-    class Meta:
-        proxy = True
-        verbose_name = "Draft Video"
-        verbose_name_plural = "Draft Videos"

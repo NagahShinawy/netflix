@@ -13,6 +13,13 @@ class VideoQuerySet(models.QuerySet):
         from apps.video.models import Video
         return self.filter(state=Video.VideoStateOptions.DRAFT)
 
+    def unlisted(self):
+        from apps.video.models import Video
+        return self.filter(state=Video.VideoStateOptions.UNLISTED)
+
+    def private(self):
+        from apps.video.models import Video
+        return self.filter(state=Video.VideoStateOptions.PRIVATE)
 
 class VideoManager(models.Manager):
 
