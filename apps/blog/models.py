@@ -33,6 +33,10 @@ def save_me(sender, instance, **kwargs):
     print(f"You Are Saving <{obj}> of <{sender}>")
 
 
+def delete_me(sender, instance, **kwargs):
+    print(f"You are deleting {instance} of {sender}")
+
+
 def create(**kwargs):
     print("test")
     
@@ -47,3 +51,5 @@ pre_init.connect(create, sender=Player)
 # signal 'pre_save' send signal with sender 'Note' that do tasks whenever saving obj to receiver 'save_me'
 
 # hi I am Note model as sender need to do some tasks by receiver 'save_me' to apply something whenever saving obj
+
+# receiver 'save_me' do tasks using data from sender 'Note' which signal happened with 'pre_save'
