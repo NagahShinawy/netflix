@@ -81,19 +81,17 @@ class Video(models.Model):
             f"Update 'published_timestamp' for video <{video}> to <{self.published_timestamp}>"
         )
 
-        self.update_slug(video)
-
         return super(Video, self).save(*args, **kwargs)
 
-    def update_slug(self, video):
-        if not self.slug:
-            logger.info(f"Update 'slug' for video <{video}> using title <{self.title}>")
-            self.slug = slugify(self.title)
-            logger.info(f"Updated 'slug' for video <{video}> to <{self.slug}>")
-
     def clean(self):
-        if Video.objects.filter(title__iexact=self.title).exists() and not self.slug:
+        if (
+            Video.objects.filter(title__iexact=self.title).exists()
+            and self.slug is None
+        ):
             raise ValidationError(DuplicatedVideoTitle.message)
+        else:
+            self.slug = slugify(self.title)
+
         super(Video, self).clean()
 
     class Meta:
