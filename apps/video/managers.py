@@ -1,30 +1,23 @@
 from django.db import models
 from django.utils import timezone
+from .choices import VideoStateOptions
 
 
 class VideoQuerySet(models.QuerySet):
     def published(self):
-        from apps.video.models import Video
-
         now = timezone.now()
         return self.filter(
-            state=Video.VideoStateOptions.PUBLISHED, published_timestamp__lte=now
+            state=VideoStateOptions.PUBLISHED, published_timestamp__lte=now
         )
 
     def draft(self):
-        from apps.video.models import Video
-
-        return self.filter(state=Video.VideoStateOptions.DRAFT)
+        return self.filter(state=VideoStateOptions.DRAFT)
 
     def unlisted(self):
-        from apps.video.models import Video
-
-        return self.filter(state=Video.VideoStateOptions.UNLISTED)
+        return self.filter(state=VideoStateOptions.UNLISTED)
 
     def private(self):
-        from apps.video.models import Video
-
-        return self.filter(state=Video.VideoStateOptions.PRIVATE)
+        return self.filter(state=VideoStateOptions.PRIVATE)
 
 
 class VideoManager(models.Manager):

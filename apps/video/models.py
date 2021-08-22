@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from .managers import VideoManager
 from .validators import MinYearValidator, MaxYearValidator
 from .errors import DuplicatedVideoTitle
+from .choices import VideoStateOptions
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/ (proxy models)
 # https://georgexyz.com/django-model-form-validation.html  (validations)
@@ -16,11 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 class Video(models.Model):
-    class VideoStateOptions(models.TextChoices):
-        PUBLISHED = "PU", "PUBLISH"  # db_value, user_display_value
-        DRAFT = "DR", "DRAFT"
-        UNLISTED = "UN", "Unlisted"
-        PRIVATE = "PR", "Private"
 
     class Year:
         MIN = 1930
@@ -65,15 +61,15 @@ class Video(models.Model):
     def save(self, *args, **kwargs):
         video = f"{self.id}-{self.title}" if self.id else self.title
         if (
-            self.state == self.VideoStateOptions.PUBLISHED
+            self.state == VideoStateOptions.PUBLISHED
             and self.published_timestamp is None
         ):
             self.published_timestamp = timezone.now()
 
-        if self.state == self.VideoStateOptions.PUBLISHED and self.published_timestamp:
+        if self.state == VideoStateOptions.PUBLISHED and self.published_timestamp:
             self.is_active = True
 
-        elif self.state == self.VideoStateOptions.DRAFT:
+        elif self.state == VideoStateOptions.DRAFT:
             self.published_timestamp = None
         logger.info(
             f"Update 'published_timestamp' for video <{video}> to <{self.published_timestamp}>"
