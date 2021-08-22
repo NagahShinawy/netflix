@@ -22,4 +22,3 @@ class EventModelAdmin(admin.ModelAdmin):
 
 admin.site.register(Note)
 admin.site.register(Player)
-

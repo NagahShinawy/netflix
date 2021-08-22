@@ -1,7 +1,6 @@
-from django.contrib.auth import get_user
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_save, pre_delete  # Inbuilt Signals
 from django.db import models
-from django.db.models.signals import pre_save, post_save, pre_init, pre_delete  # Inbuilt Signals
 
 # https://dev.to/kritebh/django-signals-3i92
 
@@ -62,7 +61,6 @@ pre_save.connect(save_me, sender=Player)
 # delete
 pre_delete.connect(delete_me, sender=Note)
 pre_delete.connect(delete_me, sender=Player)
-
 # signal 'pre_save' send signal with sender 'Note' that do tasks whenever saving obj to receiver 'save_me'
 
 # hi I am Note model as sender need to do some tasks by receiver 'save_me' to apply something whenever saving obj
