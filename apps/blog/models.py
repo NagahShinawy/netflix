@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
-from django.db.models.signals import pre_save, pre_delete  # Inbuilt Signals
+from django.db.models.signals import pre_save, pre_delete, post_save  # Inbuilt Signals
 from django.db import models
+from django.utils.text import slugify
 
 # https://dev.to/kritebh/django-signals-3i92
 
@@ -12,6 +13,7 @@ class OrderByIdMixin:
 
 class Note(models.Model, OrderByIdMixin):
     title = models.CharField(max_length=30)
+    slug = models.SlugField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.pk}-{self.title}"
@@ -19,6 +21,7 @@ class Note(models.Model, OrderByIdMixin):
 
 class Player(models.Model, OrderByIdMixin):
     name = models.CharField(max_length=256)
+    slug = models.SlugField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.pk}-{self.name}"
@@ -36,27 +39,33 @@ class Event(models.Model):
         return f"{self.action} {self.model}"
 
 
-def create_event(action, model, obj=None, user=None):
-    event = Event.objects.create(action=action, model=model, obj=obj, user=user)
+def create_event(action, model, instance=None, user=None):
+    event = Event.objects.create(action=action, model=model, instance=instance, user=user)
     return event
 
 
 def save_me(sender, instance, **kwargs):
     # called before saving the obj so no 'instance.id' is None (in case obj is new/create not update)
     print(f"You Are Saving <{instance}> of <{sender}>")
-    create_event(action=save_me.__name__, model=sender, obj=instance)
+    create_event(action=save_me.__name__, model=sender, instance=instance)
 
 
 def delete_me(sender, instance, **kwargs):
     print(f"You are deleting <{instance}> of {sender}")
-    create_event(action=delete_me.__name__, model=sender, obj=instance)
+    create_event(action=delete_me.__name__, model=sender, instance=instance)
+
+
+def update_slug(sender, instance, **kwargs):
+    if instance.slug is None and not sender.objects.filter(slug__iexact=instance.slug).exists:
+        instance.slug = slugify(instance.name)
 
 
 # save
 pre_save.connect(
     save_me, sender=Note
 )  # This will trigger after the saving data into Note model
-pre_save.connect(save_me, sender=Player)
+post_save.connect(save_me, sender=Player)
+pre_save.connect(update_slug, sender=Player)
 
 # delete
 pre_delete.connect(delete_me, sender=Note)

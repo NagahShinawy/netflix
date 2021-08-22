@@ -25,7 +25,7 @@ class Video(models.Model):
     description = models.TextField(
         max_length=225, null=True, blank=True, verbose_name=_("Description")
     )
-    slug = models.SlugField(null=True, blank=True, verbose_name=_("Slug"))
+    slug = models.SlugField(null=True, blank=True, verbose_name=_("Slug"), editable=False)
     video_id = models.CharField(max_length=225, verbose_name=_("Media ID"), unique=True)
     is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
@@ -81,19 +81,14 @@ class Video(models.Model):
             f"Update 'published_timestamp' for video <{video}> to <{self.published_timestamp}>"
         )
 
-        self.update_slug(video)
-
         return super(Video, self).save(*args, **kwargs)
 
-    def update_slug(self, video):
-        if not self.slug:
-            logger.info(f"Update 'slug' for video <{video}> using title <{self.title}>")
-            self.slug = slugify(self.title)
-            logger.info(f"Updated 'slug' for video <{video}> to <{self.slug}>")
-
     def clean(self):
-        if Video.objects.filter(title__iexact=self.title).exists() and not self.slug:
+        if Video.objects.filter(title__iexact=self.title).exists() and self.slug is None:
             raise ValidationError(DuplicatedVideoTitle.message)
+        else:
+            self.slug = slugify(self.title)
+
         super(Video, self).clean()
 
     class Meta:
