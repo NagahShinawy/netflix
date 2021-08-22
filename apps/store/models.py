@@ -66,6 +66,7 @@ def dropped_price(sender, instance, **kwargs):
 @receiver(pre_delete, sender=Product)
 def delete_product_image(sender, instance, **kwargs):
     if not instance.image:
+        logger.info(f"<{instance}> was deleted")
         return
     imgpath = f"{instance.image.path}"
     os.remove(imgpath)
