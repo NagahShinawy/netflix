@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 
 class Video(models.Model):
-
     class Year:
         MIN = 1930
         max_ = datetime.datetime.now().year
@@ -43,10 +42,7 @@ class Video(models.Model):
     year = models.PositiveIntegerField(
         null=True,
         blank=True,
-        validators=[
-            MinYearValidator(Year.MIN),
-            MaxYearValidator(Year.max_),
-        ],
+        validators=[MinYearValidator(Year.MIN), MaxYearValidator(Year.max_),],
     )
     objects = VideoManager()
 
@@ -56,20 +52,30 @@ class Video(models.Model):
 
     @property
     def is_published(self):
-        return self.is_active
+        return self.is_active and self.state == VideoStateOptions.PUBLISHED
+
+    @property
+    def is_draft(self):
+        return self.state == VideoStateOptions.DRAFT
+
+    @property
+    def is_unlisted(self):
+        return self.state == VideoStateOptions.UNLISTED
+
+    @property
+    def is_private(self):
+        return self.state == VideoStateOptions.PRIVATE
 
     def save(self, *args, **kwargs):
         video = f"{self.id}-{self.title}" if self.id else self.title
-        if (
-            self.state == VideoStateOptions.PUBLISHED
-            and self.published_timestamp is None
-        ):
+        is_published = self.state == VideoStateOptions.PUBLISHED
+        if is_published and self.published_timestamp is None:
             self.published_timestamp = timezone.now()
 
-        if self.state == VideoStateOptions.PUBLISHED and self.published_timestamp:
+        if is_published and self.published_timestamp:
             self.is_active = True
 
-        elif self.state == VideoStateOptions.DRAFT:
+        elif self.is_draft:
             self.published_timestamp = None
         logger.info(
             f"Update 'published_timestamp' for video <{video}> to <{self.published_timestamp}>"

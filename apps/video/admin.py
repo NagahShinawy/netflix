@@ -19,6 +19,7 @@ class VideoModelAdmin(admin.ModelAdmin):
         "state",
         "title",
         "slug",
+        "year",
         "is_published",
         "is_active",
         "published_timestamp",

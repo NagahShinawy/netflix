@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.test import TestCase
 from django.utils.text import slugify
 from .models import Video
+from .choices import VideoStateOptions
 
 video = {
     "title": "this is video",
@@ -93,7 +94,7 @@ class VideoModelTestCase(TestCase):
         test for draft video case
         :return:
         """
-        qs = Video.objects.filter(state=Video.VideoStateOptions.DRAFT)
+        qs = Video.objects.filter(state=VideoStateOptions.DRAFT)
         self.assertEqual(qs.count(), self.VIDEOS_COUNT)
 
     def test_published_and_not_published(self):
@@ -102,10 +103,10 @@ class VideoModelTestCase(TestCase):
         :return:
         """
         obj = Video.objects.first()
-        obj.state = Video.VideoStateOptions.PUBLISHED
+        obj.state = VideoStateOptions.PUBLISHED
         obj.save()
-        published = Video.objects.filter(state=Video.VideoStateOptions.PUBLISHED)
-        not_published = Video.objects.exclude(state=Video.VideoStateOptions.PUBLISHED)
+        published = Video.objects.filter(state=VideoStateOptions.PUBLISHED)
+        not_published = Video.objects.exclude(state=VideoStateOptions.PUBLISHED)
         self.assertEqual(published.count(), 1)
         self.assertEqual(not_published.count(), self.VIDEOS_COUNT - 1)
 
@@ -115,10 +116,10 @@ class VideoModelTestCase(TestCase):
         :return:
         """
         now = timezone.now()
-        video.update({"state": Video.VideoStateOptions.PUBLISHED})
+        video.update({"state": VideoStateOptions.PUBLISHED})
         Video.objects.create(**video)
         qs = Video.objects.filter(
-            published_timestamp__lte=now, state=Video.VideoStateOptions.PUBLISHED
+            published_timestamp__lte=now, state=VideoStateOptions.PUBLISHED
         )
         self.assertTrue(qs.exists())
 
@@ -128,7 +129,7 @@ class VideoModelTestCase(TestCase):
         self.assertEqual(test_slug, obj.slug)
 
     def test_published_manager(self):
-        video.update({"state": Video.VideoStateOptions.PUBLISHED})
+        video.update({"state": VideoStateOptions.PUBLISHED})
         Video.objects.create(**video)
         published_qs = (
             Video.objects.all().published()
