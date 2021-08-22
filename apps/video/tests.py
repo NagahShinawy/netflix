@@ -11,6 +11,7 @@ from .choices import VideoStateOptions
 video = {
     "title": "this is video",
     "description": "video desc",
+    "slug": "this-is-video"
 }
 
 
