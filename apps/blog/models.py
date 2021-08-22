@@ -5,6 +5,8 @@ from django.utils.text import slugify
 
 # https://dev.to/kritebh/django-signals-3i92
 
+# signals is technique used to handle events/actions on the models
+
 
 class OrderByIdMixin:
     class Meta:
@@ -56,7 +58,7 @@ def delete_me(sender, instance, **kwargs):
 
 
 def update_slug(sender, instance, **kwargs):
-    if instance.slug is None and not sender.objects.filter(slug__iexact=instance.slug).exists:
+    if instance.slug is None and not sender.objects.filter(name__iexact=instance.name).exists():
         instance.slug = slugify(instance.name)
 
 
@@ -68,8 +70,8 @@ post_save.connect(save_me, sender=Player)
 pre_save.connect(update_slug, sender=Player)
 
 # delete
-pre_delete.connect(delete_me, sender=Note)
-pre_delete.connect(delete_me, sender=Player)
+pre_delete.connect(receiver=delete_me, sender=Note)
+pre_delete.connect(receiver=delete_me, sender=Player)
 # signal 'pre_save' send signal with sender 'Note' that do tasks whenever saving obj to receiver 'save_me'
 
 # hi I am Note model as sender need to do some tasks by receiver 'save_me' to apply something whenever saving obj
