@@ -7,4 +7,3 @@ class MaxYearValidator(MaxValueValidator):
 
 class MinYearValidator(MinValueValidator):
     message = f"Video Production Year Is Very Old. Min is '%(limit_value)s'. Given '%(show_value)s'"
-

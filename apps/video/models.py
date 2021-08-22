@@ -42,7 +42,7 @@ class Video(models.Model):
     year = models.PositiveIntegerField(
         null=True,
         blank=True,
-        validators=[MinYearValidator(Year.MIN), MaxYearValidator(Year.max_),],
+        validators=[MinYearValidator(Year.MIN), MaxYearValidator(Year.max_)],
     )
     objects = VideoManager()
 
