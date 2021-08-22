@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import pre_save, post_save, pre_init, pre_delete  # Inbuilt Signals
 
@@ -23,26 +25,43 @@ class Player(models.Model, OrderByIdMixin):
         return f"{self.pk}-{self.name}"
 
 
+class Event(models.Model):
+    action = models.CharField(max_length=256)
+    model = models.CharField(max_length=256)
+    instance = models.CharField(max_length=256, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return f"{self.action} {self.model}"
+
+
+def create_event(action, model, obj=None, user=None):
+    event = Event.objects.create(action=action, model=model, obj=obj, user=user)
+    return event
+
+
 def save_me(sender, instance, **kwargs):
     # called before saving the obj so no 'instance.id' is None (in case obj is new/create not update)
     print(f"You Are Saving <{instance}> of <{sender}>")
+    create_event(action=save_me.__name__, model=sender, obj=instance)
 
 
 def delete_me(sender, instance, **kwargs):
     print(f"You are deleting <{instance}> of {sender}")
+    create_event(action=delete_me.__name__, model=sender, obj=instance)
 
 
-def create(**kwargs):
-    print("test")
-
-
+# save
 pre_save.connect(
     save_me, sender=Note
 )  # This will trigger after the saving data into Note model
-
-pre_delete.connect(delete_me, sender=Note)
 pre_save.connect(save_me, sender=Player)
-pre_init.connect(create, sender=Player)
+
+# delete
+pre_delete.connect(delete_me, sender=Note)
+pre_delete.connect(delete_me, sender=Player)
 
 # signal 'pre_save' send signal with sender 'Note' that do tasks whenever saving obj to receiver 'save_me'
 
