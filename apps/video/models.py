@@ -85,7 +85,7 @@ class Video(models.Model):
 
     def clean(self):
         if (
-            Video.objects.filter(title__iexact=self.title).exists()
+            Video.objects.is_title_exists(self.title)
             and self.slug is None
         ):
             raise ValidationError(DuplicatedVideoTitle.message)

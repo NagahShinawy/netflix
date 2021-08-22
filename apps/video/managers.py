@@ -19,6 +19,9 @@ class VideoQuerySet(models.QuerySet):
     def private(self):
         return self.filter(state=VideoStateOptions.PRIVATE)
 
+    def is_title_exists(self, title):
+        return self.filter(title__iexact=title).exists()
+
 
 class VideoManager(models.Manager):
     def get_queryset(self):
@@ -29,3 +32,6 @@ class VideoManager(models.Manager):
     # 2- using Queryset ==> Video.objects.all().published()
     def published(self):
         return self.get_queryset().published()
+
+    def is_title_exists(self, title):
+        return self.get_queryset().is_title_exists(title)
