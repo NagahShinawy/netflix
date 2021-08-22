@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 # https://dev.to/epamindia/django-signals-30g3
@@ -28,5 +28,16 @@ def create_product(sender, instance, **kwargs):
     :return:
     """
     if kwargs.get("created"):  # True just for first time when obj created
-        print(f"Emails send to user with new product {instance}")
+        print(f"Emails send to user with new product <{instance}>")
 
+
+@receiver(pre_save, sender=Product)
+def notify_missed_image(sender, instance, **kwargs):
+    if instance.pk is None:
+        obj = instance.title
+    else:
+        obj = f"{instance.pk}-{instance.title}"
+    if not instance.image:
+        print(f"Image of <{obj}> is missed")
+    else:
+        print(f"Image of <{obj}> located at <{instance.image.url}>")
