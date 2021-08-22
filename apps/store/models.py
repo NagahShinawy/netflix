@@ -12,7 +12,7 @@ class Product(models.Model):
     title = models.CharField(max_length=256)
     image = models.ImageField(null=True, blank=True, upload_to="products/%Y-%m-%d")
     created = models.DateTimeField(auto_now_add=True)
-    price = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=1000)
     offer = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(100), MinValueValidator(0)])
 
     def __str__(self):
@@ -42,3 +42,14 @@ def create_product(sender, instance, **kwargs):
 @receiver(pre_save, sender=Product)
 def notify_missed_image(sender, instance, **kwargs):
     notify_image_receiver(instance=instance)
+
+
+@receiver(pre_save, sender=Product)
+def dropped_price(sender, instance, **kwargs):
+    if instance.id is None:
+        return
+
+    current_instance = instance
+    saved_instance = sender.objects.get(id=instance.id)
+    if saved_instance.price < current_instance.price:
+        print(f"You Are Changing Price From '{saved_instance.price}' to '{current_instance.price}'")
