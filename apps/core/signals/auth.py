@@ -11,7 +11,7 @@ from apps.core.models import LoginLogoutAttempt, StatusChoices
 from apps.core.utils import http
 
 
-@receiver(user_logged_in,  dispatch_uid="user_logged_in_callback")
+@receiver(user_logged_in, dispatch_uid="user_logged_in_callback")
 def user_logged_in_callback(sender, request, user, **kwargs):
     ip = http.get_user_ip(request)
     LoginLogoutAttempt.objects.create(
@@ -20,7 +20,7 @@ def user_logged_in_callback(sender, request, user, **kwargs):
 
 
 # if there are duplicated receiver, it triggers the first one or use dispatch_uid[unique identifier] for each receiver
-@receiver(user_logged_in,  dispatch_uid="user_logged_in_2_callback")
+@receiver(user_logged_in, dispatch_uid="user_logged_in_2_callback")
 def user_logged_in_2_callback(sender, request, user, **kwargs):
     print("LOGIN-2")
     LoginLogoutAttempt.objects.create(
@@ -28,7 +28,7 @@ def user_logged_in_2_callback(sender, request, user, **kwargs):
     )
 
 
-@receiver(user_logged_out,  dispatch_uid="user_logged_out_callback")
+@receiver(user_logged_out, dispatch_uid="user_logged_out_callback")
 def user_logged_out_callback(sender, request, user, **kwargs):
     ip = http.get_user_ip(request)
     LoginLogoutAttempt.objects.create(

@@ -1,10 +1,11 @@
 from django.contrib import admin
 
-from .models import LoginLogoutAttempt
+from .models import LoginLogoutAttempt, MedicalReport
 
 
 @admin.register(LoginLogoutAttempt)
 class LoginAttemptModelAdmin(admin.ModelAdmin):
+    date_hierarchy = "login_date"
     list_display = (
         "id",
         "username",
@@ -24,3 +25,6 @@ class LoginAttemptModelAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+
+admin.site.register(MedicalReport)
