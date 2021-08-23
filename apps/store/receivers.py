@@ -18,5 +18,7 @@ def discount_price_receiver(instance):
     old_price = float(instance.price)
     if instance.offer > 0:
         instance.price = old_price - ((instance.offer / 100) * old_price)
-        logger.info(f"Price was '{old_price}' after offer of '{instance.offer}%' becomes '{instance.price}'")
+        logger.info(
+            f"Price was '{old_price}' after offer of '{instance.offer}%' becomes '{instance.price}'"
+        )
     return instance

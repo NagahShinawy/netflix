@@ -20,9 +20,7 @@ class VideoQuerySet(models.QuerySet):
         return self.filter(state=VideoStateOptions.PRIVATE)
 
     def is_exists(self, field, value):
-        query = {
-            field + "__iexact": value
-        }
+        query = {field + "__iexact": value}
         return self.filter(**query).exists()
 
 

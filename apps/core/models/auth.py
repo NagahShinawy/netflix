@@ -24,6 +24,7 @@ class LoginLogoutAttempt(models.Model):
 
     class Meta:
         ordering = ["-login_date"]
+        verbose_name_plural = "Login/Logout Attempt"
 
     def __str__(self):
         return f"{self.username} {self.login_date}"

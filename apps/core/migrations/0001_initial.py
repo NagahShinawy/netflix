@@ -8,22 +8,51 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='LoginAttempt',
+            name="LoginAttempt",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(max_length=256, verbose_name='Username')),
-                ('status', models.CharField(choices=[('invalid_credentials', 'Invalid credentials'), ('success', 'Success'), ('failed', 'Failed')], max_length=256, verbose_name='Status')),
-                ('ip', models.GenericIPAddressField(blank=True, null=True, verbose_name='IP Address')),
-                ('login_date', models.DateTimeField(auto_now_add=True, verbose_name='Login Date')),
-                ('session_duration', models.DurationField(default=datetime.timedelta, verbose_name='Session duration')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("username", models.CharField(max_length=256, verbose_name="Username")),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("invalid_credentials", "Invalid credentials"),
+                            ("success", "Success"),
+                            ("failed", "Failed"),
+                        ],
+                        max_length=256,
+                        verbose_name="Status",
+                    ),
+                ),
+                (
+                    "ip",
+                    models.GenericIPAddressField(
+                        blank=True, null=True, verbose_name="IP Address"
+                    ),
+                ),
+                (
+                    "login_date",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Login Date"),
+                ),
+                (
+                    "session_duration",
+                    models.DurationField(
+                        default=datetime.timedelta, verbose_name="Session duration"
+                    ),
+                ),
             ],
-            options={
-                'ordering': ['-login_date'],
-            },
+            options={"ordering": ["-login_date"],},
         ),
     ]

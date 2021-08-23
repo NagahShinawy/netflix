@@ -8,11 +8,7 @@ from django.utils.text import slugify
 from .models import Video
 from .choices import VideoStateOptions
 
-video = {
-    "title": "this is video",
-    "description": "video desc",
-    "slug": "this-is-video"
-}
+video = {"title": "this is video", "description": "video desc", "slug": "this-is-video"}
 
 
 class VideoModelTestCase(TestCase):

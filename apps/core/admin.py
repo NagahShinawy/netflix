@@ -13,7 +13,7 @@ class LoginAttemptModelAdmin(admin.ModelAdmin):
         "login_date",
         "get_roles_displayed",
     )
-    list_filter = ("status", )
+    list_filter = ("status",)
     search_fields = ("status", "get_roles_displayed", "username", "id")
 
     def has_delete_permission(self, request, obj=None):
