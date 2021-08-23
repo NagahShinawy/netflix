@@ -7,7 +7,6 @@ from django.db import models
 class StatusChoices(models.TextChoices):
     INVALID_CREDENTIALS = "invalid_credentials", "Invalid credentials"
     SUCCESS = "success", "Success"
-    FAILED = "failed", "Failed"
     LOGOUT = "logout", "Logout"
 
 
