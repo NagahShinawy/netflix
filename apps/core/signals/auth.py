@@ -29,5 +29,5 @@ def user_logged_out_callback(sender, request, user, **kwargs):
 def user_logged_in_failed_callback(sender, credentials, request, **kwargs):
     ip = http.get_user_ip(request)
     LoginLogoutAttempt.objects.create(
-        username=credentials["username"], ip=ip, status=StatusChoices.FAILED
+        username=credentials["username"], ip=ip, status=StatusChoices.INVALID_CREDENTIALS
     )
