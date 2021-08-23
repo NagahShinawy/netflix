@@ -14,7 +14,7 @@ class LoginAttemptModelAdmin(admin.ModelAdmin):
         "get_roles_displayed",
     )
     list_filter = ("status",)
-    search_fields = ("status", "get_roles_displayed", "username", "id")
+    search_fields = ("status", "username", "id")
 
     def has_delete_permission(self, request, obj=None):
         return False

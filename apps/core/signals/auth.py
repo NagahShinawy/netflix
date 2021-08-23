@@ -13,7 +13,7 @@ from apps.core.utils import http
 def user_logged_in_callback(sender, request, user, **kwargs):
     ip = http.get_user_ip(request)
     LoginLogoutAttempt.objects.create(
-        username=user.username, ip=ip, status=StatusChoices.SUCCESS
+        username=user.username, ip=ip, status=StatusChoices.SUCCESS_LOGIN
     )
 
 
@@ -21,7 +21,7 @@ def user_logged_in_callback(sender, request, user, **kwargs):
 def user_logged_out_callback(sender, request, user, **kwargs):
     ip = http.get_user_ip(request)
     LoginLogoutAttempt.objects.create(
-        username=user.username, ip=ip, status=StatusChoices.LOGOUT
+        username=user.username, ip=ip, status=StatusChoices.SUCCESS_LOGOUT
     )
 
 
