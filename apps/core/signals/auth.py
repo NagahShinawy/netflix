@@ -1,4 +1,6 @@
-from django.contrib.auth.models import User
+# dispatch_uid – A unique identifier for a signal receiver in cases where duplicate signals may be sent
+
+
 from django.dispatch import receiver
 from django.contrib.auth.signals import (
     user_logged_in,
@@ -9,7 +11,7 @@ from apps.core.models import LoginLogoutAttempt, StatusChoices
 from apps.core.utils import http
 
 
-@receiver(user_logged_in, sender=User)
+@receiver(user_logged_in,  dispatch_uid="user_logged_in_callback")
 def user_logged_in_callback(sender, request, user, **kwargs):
     ip = http.get_user_ip(request)
     LoginLogoutAttempt.objects.create(
@@ -17,7 +19,16 @@ def user_logged_in_callback(sender, request, user, **kwargs):
     )
 
 
-@receiver(user_logged_out, sender=User)
+# if there are duplicated receiver, it triggers the first one or use dispatch_uid[unique identifier] for each receiver
+@receiver(user_logged_in,  dispatch_uid="user_logged_in_2_callback")
+def user_logged_in_2_callback(sender, request, user, **kwargs):
+    print("LOGIN-2")
+    LoginLogoutAttempt.objects.create(
+        username=user.username, status=StatusChoices.SUCCESS_LOGIN
+    )
+
+
+@receiver(user_logged_out,  dispatch_uid="user_logged_out_callback")
 def user_logged_out_callback(sender, request, user, **kwargs):
     ip = http.get_user_ip(request)
     LoginLogoutAttempt.objects.create(
