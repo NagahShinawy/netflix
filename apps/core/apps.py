@@ -2,11 +2,10 @@ from importlib import import_module
 from django.apps import AppConfig
 
 
-class StoreConfig(AppConfig):
+class CoreConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.store'
+    name = 'apps.core'
 
     def ready(self):
-        from apps.store import signals
-        # import_module("apps.store.signals")
+        import_module("apps.core.signals")
 
