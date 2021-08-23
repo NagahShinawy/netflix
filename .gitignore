@@ -134,4 +134,4 @@ dmypy.json
 /apps/gcc/migrations
 /apps/store/migrations
 /apps/video/migrations
-./media/
+./media/products/
