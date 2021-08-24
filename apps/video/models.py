@@ -66,23 +66,6 @@ class Video(models.Model):
     def is_private(self):
         return self.state == VideoStateOptions.PRIVATE
 
-    def save(self, *args, **kwargs):
-        video = f"{self.id}-{self.title}" if self.id else self.title
-        is_published = self.state == VideoStateOptions.PUBLISHED
-        if is_published and self.published_timestamp is None:
-            self.published_timestamp = timezone.now()
-
-        if is_published and self.published_timestamp:
-            self.is_active = True
-
-        elif self.is_draft:
-            self.published_timestamp = None
-        logger.info(
-            f"Update 'published_timestamp' for video <{video}> to <{self.published_timestamp}>"
-        )
-
-        return super(Video, self).save(*args, **kwargs)
-
     def clean(self):
         if (
             Video.objects.is_exists(field="title", value=self.title)
