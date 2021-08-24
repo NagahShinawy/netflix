@@ -3,7 +3,6 @@ import logging
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
 from django.core.exceptions import ValidationError
 from .managers import VideoManager
 from .validators import MinYearValidator, MaxYearValidator
@@ -72,8 +71,6 @@ class Video(models.Model):
             and self.slug is None
         ):
             raise ValidationError(DuplicatedVideoTitle.message)
-        else:
-            self.slug = slugify(self.title)
 
         super(Video, self).clean()
 
