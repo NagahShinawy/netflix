@@ -10,14 +10,14 @@ from .choices import VideoStateOptions
 logger = logging.getLogger(__name__)
 
 
-def get_video(instance):
+def get_video_representation(instance):
     video = f"{instance.id}-{instance.title}" if instance.id else instance.title
     return video
 
 
 @receiver(pre_save, sender=Video, dispatch_uid="update_published_timestamp")
 def update_published_timestamp(sender, instance, **kwargs):
-    video = get_video(instance)
+    video = get_video_representation(instance)
     is_published = instance.state == VideoStateOptions.PUBLISHED
     if is_published and instance.published_timestamp is None:
         instance.published_timestamp = timezone.now()
@@ -35,10 +35,7 @@ def update_published_timestamp(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Video, dispatch_uid="update_slug")
 def update_slug(sender, instance, **kwargs):
-    video = get_video(instance)
+    video = get_video_representation(instance)
     if instance.slug is None:
         instance.slug = slugify(instance.title)
-        logger.info(
-            f"Update 'slug' for video <{video}> to <{instance.slug}>"
-        )
-
+        logger.info(f"Update 'slug' for video <{video}> to <{instance.slug}>")
