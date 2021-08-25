@@ -11,4 +11,4 @@ class CityModelAdmin(admin.ModelAdmin):
 @admin.register(Country)
 class CountryModelAdmin(admin.ModelAdmin):
     list_display = ("id", "name")
-    list_editable = ("name", )
+    list_editable = ("name",)

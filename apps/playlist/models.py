@@ -35,3 +35,7 @@ class Playlist(
 
     def get_videos_ids(self):
         return self.videos.all().values_list("id", "title", "playlist_id")
+
+    def related_videos(self):
+        videos = self.videos.all().values_list("title")
+        return ". ".join([f"{counter}-{video[0]}" for counter, video in enumerate(videos, start=1)])

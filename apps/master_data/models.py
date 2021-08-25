@@ -12,14 +12,15 @@ class NameMixin(models.Model):
 
 
 class Country(NameMixin, models.Model):
-
     class Meta:
         verbose_name = "Country"  # add
         verbose_name_plural = "Countries"  #
 
 
 class City(NameMixin, models.Model):
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="cities")
+    country = models.ForeignKey(
+        Country, on_delete=models.CASCADE, related_name="cities"
+    )
 
     class Meta:
         verbose_name = "City"  # add
