@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.test import TestCase
 from django.utils.text import slugify
 from .models import Video
+from apps.playlist.models import Playlist
 from .choices import VideoStateOptions
 
 video = {"title": "this is video", "description": "video desc", "slug": "this-is-video"}
@@ -28,6 +29,11 @@ class VideoModelTestCase(TestCase):
         """
         for i in range(self.VIDEOS_COUNT):
             Video.objects.create(**video, video_id=i)
+
+        self.last_video = Video.objects.last()
+        self.playlist = Playlist.objects.create(title="Playlist#1")
+
+        self.last_video.playlist = self.playlist
 
     def test_create_videos(self):
         """
@@ -141,3 +147,6 @@ class VideoModelTestCase(TestCase):
         qs = Video.objects.all().draft()
         self.assertTrue(qs.exists())
         self.assertEqual(qs.count(), self.VIDEOS_COUNT)
+
+    def test_playlist(self):
+        self.assertEqual(self.playlist.id, self.last_video.playlist.id)
