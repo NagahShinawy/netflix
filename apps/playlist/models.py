@@ -1,13 +1,17 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+# from django.utils.translation import gettext_lazy as _
 from apps.core.db.models import TimestampMixin, SlugMixin, InfoMixin
-from apps.video.models import Video
+from apps.core.utils.base import update_slug
 
 
 class Playlist(TimestampMixin, SlugMixin, InfoMixin, models.Model):
-    video = models.ForeignKey(
-        Video,
-        on_delete=models.CASCADE,
-        related_name="playlist",
-        verbose_name=_("Video"),
-    )
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+
+        update_slug(instance=self)
+        return super().save(*args, **kwargs)
+
+
