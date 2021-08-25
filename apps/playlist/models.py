@@ -32,3 +32,6 @@ class Playlist(
 
         update_slug(instance=self)
         return super().save(*args, **kwargs)
+
+    def get_videos_ids(self):
+        return self.videos.all().values_list("id", "title", "playlist_id")
