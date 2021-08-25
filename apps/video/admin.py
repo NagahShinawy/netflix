@@ -28,9 +28,15 @@ class VideoModelAdmin(admin.ModelAdmin):
         "updated",
     )
     list_display_links = ("id", "video_id", "title")
-    list_editable = ("playlist", )
+    list_editable = ("playlist",)
     list_filter = ("is_active", "state")
-    search_fields = ("id", "title", "description", "playlist__title", "playlist__description")
+    search_fields = (
+        "id",
+        "title",
+        "description",
+        "playlist__title",
+        "playlist__description",
+    )
     readonly_fields = ["id", "is_published", "published_timestamp"]
     list_per_page = 10
     save_on_top = True  # btn save on top

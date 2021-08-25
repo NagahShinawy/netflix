@@ -4,7 +4,6 @@ from .models import Playlist
 
 
 class PlaylistTestCase(TestCase):
-
     def setUp(self) -> None:
         self.playlist = Playlist.objects.create(title="This Is Playlist")
 
@@ -20,5 +19,3 @@ class PlaylistTestCase(TestCase):
 
     def test_description(self):
         self.assertEqual(self.playlist.description, None)
-
-

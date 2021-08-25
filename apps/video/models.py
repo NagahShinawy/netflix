@@ -7,7 +7,14 @@ from .managers import VideoManager
 from .validators import MinYearValidator, MaxYearValidator
 from .errors import DuplicatedVideoTitle
 from .choices import VideoStateOptions
-from apps.core.db.models import TimestampMixin, SlugMixin, InfoMixin
+from apps.core.db.models import (
+    TimestampMixin,
+    SlugMixin,
+    InfoMixin,
+    StateMixin,
+    IsActiveMixin,
+    PublishedTimestamp,
+)
 from apps.playlist.models import Playlist
 
 # https://www.kite.com/blog/python/advanced-django-models-python-overview/ (proxy models)
@@ -16,19 +23,20 @@ from apps.playlist.models import Playlist
 logger = logging.getLogger(__name__)
 
 
-class Video(TimestampMixin, InfoMixin, SlugMixin, models.Model):
+class Video(
+    TimestampMixin,
+    InfoMixin,
+    SlugMixin,
+    StateMixin,
+    IsActiveMixin,
+    PublishedTimestamp,
+    models.Model,
+):
     class Year:
         MIN = 1930
         max_ = datetime.datetime.now().year
 
     video_id = models.CharField(max_length=225, verbose_name=_("Media ID"), unique=True)
-    is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
-    state = models.CharField(
-        max_length=2, choices=VideoStateOptions.choices, default=VideoStateOptions.DRAFT
-    )
-    published_timestamp = models.DateTimeField(
-        auto_now_add=False, auto_now=False, null=True, blank=True, editable=False
-    )
 
     year = models.PositiveIntegerField(
         null=True,
@@ -41,7 +49,7 @@ class Video(TimestampMixin, InfoMixin, SlugMixin, models.Model):
         related_name="video",
         verbose_name=_("Playlist"),
         blank=True,
-        null=True
+        null=True,
     )  # frst = Playlist.objects.first()  ==> frst.video.all()  # 'video' is related_name
     objects = VideoManager()
 
@@ -67,8 +75,8 @@ class Video(TimestampMixin, InfoMixin, SlugMixin, models.Model):
 
     def clean(self):
         if (
-                Video.objects.is_exists(field="title", value=self.title)
-                and self.slug is None
+            Video.objects.is_exists(field="title", value=self.title)
+            and self.slug is None
         ):
             raise ValidationError(DuplicatedVideoTitle.message)
 

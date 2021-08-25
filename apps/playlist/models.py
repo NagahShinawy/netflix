@@ -1,11 +1,27 @@
 from django.db import models
+
 # from django.utils.translation import gettext_lazy as _
-from apps.core.db.models import TimestampMixin, SlugMixin, InfoMixin
+from apps.core.db.models import (
+    TimestampMixin,
+    SlugMixin,
+    InfoMixin,
+    StateMixin,
+    IsActiveMixin,
+    PublishedTimestamp,
+)
 from .managers import PlaylistManager
 from apps.core.utils.base import update_slug
 
 
-class Playlist(TimestampMixin, SlugMixin, InfoMixin, models.Model):
+class Playlist(
+    TimestampMixin,
+    SlugMixin,
+    InfoMixin,
+    StateMixin,
+    IsActiveMixin,
+    PublishedTimestamp,
+    models.Model,
+):
 
     objects = PlaylistManager()
 
@@ -16,5 +32,3 @@ class Playlist(TimestampMixin, SlugMixin, InfoMixin, models.Model):
 
         update_slug(instance=self)
         return super().save(*args, **kwargs)
-
-
