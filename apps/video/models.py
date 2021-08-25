@@ -42,7 +42,7 @@ class Video(TimestampMixin, InfoMixin, SlugMixin, models.Model):
         verbose_name=_("Playlist"),
         blank=True,
         null=True
-    )
+    )  # frst = Playlist.objects.first()  ==> frst.video.all()  # 'video' is related_name
     objects = VideoManager()
 
     def __str__(self):

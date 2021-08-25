@@ -20,6 +20,7 @@ class VideoModelAdmin(admin.ModelAdmin):
         "title",
         "slug",
         "year",
+        "playlist",
         "is_published",
         "is_active",
         "published_timestamp",
@@ -27,6 +28,7 @@ class VideoModelAdmin(admin.ModelAdmin):
         "updated",
     )
     list_display_links = ("id", "video_id", "title")
+    list_editable = ("playlist", )
     list_filter = ("is_active", "state")
     search_fields = ("id", "title", "description", "playlist__title", "playlist__description")
     readonly_fields = ["id", "is_published", "published_timestamp"]
