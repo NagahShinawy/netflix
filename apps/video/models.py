@@ -36,7 +36,8 @@ class Video(
         MIN = 1930
         max_ = datetime.datetime.now().year
 
-    video_id = models.CharField(max_length=225, verbose_name=_("Media ID"), unique=True)
+    # video_id = models.CharField(max_length=225, verbose_name=_("Media ID"), unique=True)
+    video_id = models.CharField(max_length=225, verbose_name=_("Media ID"), null=True, blank=True)
 
     year = models.PositiveIntegerField(
         null=True,
