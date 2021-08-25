@@ -34,9 +34,12 @@ class Playlist(
         return super().save(*args, **kwargs)
 
     def get_videos_ids(self):
-        return self.videos.all().values_list("id", "title", "playlist_id")
+        return ", ".join([str(video[0]) for video in self.videos.all().values_list("id")])
 
     def related_videos(self):
         videos = self.videos.all().values_list("title")
         videos_titles = [video[0] for video in videos]
         return ". ".join([f"{counter}-{video}" for counter, video in enumerate(videos_titles, start=1)])
+
+    def total_videos(self):
+        return self.videos.all().count()
