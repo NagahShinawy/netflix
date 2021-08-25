@@ -27,5 +27,5 @@ class PlaylistTestCase(TestCase):
         self.assertEqual(self.playlist.description, None)
 
     def test_related_videos(self):
-        qs = self.playlist.video.all()
+        qs = self.playlist.videos.all()
         self.assertEqual(qs.count(), 2)

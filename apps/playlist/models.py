@@ -39,7 +39,9 @@ class Playlist(
     def related_videos(self):
         videos = self.videos.all().values_list("title")
         videos_titles = [video[0] for video in videos]
-        return ". ".join([f"{counter}-{video}" for counter, video in enumerate(videos_titles, start=1)])
+        if videos_titles:
+            return ". ".join([f"{counter}-{video}" for counter, video in enumerate(videos_titles, start=1)])
+        return "-"
 
     def total_videos(self):
         return self.videos.all().count()

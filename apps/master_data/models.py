@@ -13,6 +13,7 @@ class NameMixin(models.Model):
 
 class Country(NameMixin, models.Model):
     class Meta:
+        ordering = ["id"]
         verbose_name = "Country"  # add
         verbose_name_plural = "Countries"  #
 
@@ -23,6 +24,7 @@ class City(NameMixin, models.Model):
     )
 
     class Meta:
+        ordering = ["id"]
         verbose_name = "City"  # add
         verbose_name_plural = "Cities"  #
 
