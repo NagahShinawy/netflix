@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
-INSTALLED_APPS += ["apps.video", "apps.playlist"]
+INSTALLED_APPS += ["apps.video", "apps.playlist", "apps.master_data"]
 # rich text
 INSTALLED_APPS += [
     "ckeditor",
