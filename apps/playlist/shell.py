@@ -1,4 +1,5 @@
 from apps.video.models import Video
+from apps.video.choices import VideoStateOptions
 from .models import Playlist
 
 django = Playlist.objects.create(title="django course")
@@ -7,7 +8,7 @@ movies = Playlist.objects.create(title="Movies")
 models_ = Video.objects.create(title="models", playlist=django)
 forms = Video.objects.create(title="forms", playlist=django)
 templates = Video.objects.create(title="templates", playlist=django)
-rest = Video.objects.create(title="rest", playlist=django)
+rest = Video.objects.create(title="rest", playlist=django, state=VideoStateOptions.PUBLISHED)
 
 # ################ ################ ################ ################ ################ ###############
 
