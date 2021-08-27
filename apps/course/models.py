@@ -30,7 +30,9 @@ class Student(ModelRepresentationMixin, models.Model):
 
 class Doctor(ModelRepresentationMixin, models.Model):
     fname = models.CharField(max_length=256)
-    medical_centers = models.ManyToManyField("course.MedicalCenter", null=True, blank=True, related_name="doctors")
+    medical_centers = models.ManyToManyField(
+        "course.MedicalCenter", null=True, blank=True, related_name="doctors"
+    )
 
     def __str__(self):
         return f"{self.id}-{self.fname}"
@@ -54,6 +56,7 @@ class MedicalCenter(ModelRepresentationMixin, models.Model):
 
     def __str__(self):
         return f"{self.id}-{self.name}"
+
 
 """
 >>> from apps.course.models import Student, Course
