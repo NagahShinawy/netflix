@@ -28,9 +28,9 @@ class Student(ModelRepresentationMixin, models.Model):
         return self.courses
 
     def grades(self):
-        qs = CourseGrade.objects.filter(student=self)
-        if qs:
-            return [grade.to_pretty() for grade in qs]
+        student_grades = CourseGrade.objects.filter(student__id=self.id)
+        if student_grades:
+            return [grade.to_pretty() for grade in student_grades]
         return "-"
 
 
