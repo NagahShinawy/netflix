@@ -45,6 +45,12 @@ class MedicalCenterTestCase(DoctorCenterTestCaseMixin):
     def test_remove_medical_center_of_doctor(self):
         self.mayo.doctors.remove(self.john)
         self.assertEqual(self.mayo.doctors.all().count(), 0)  # now mayo has no doctors
-        self.assertEquals(
+        self.assertEqual(
             self.john.medical_centers.all().count(), len(self.medical_centers) - 1
         )  # now mayo removed from john related centers list
+
+    def test_empty_centers_for_doctor(self):
+        self.assertEqual(self.adam.medical_centers.all().count(), 1)
+        self.mersal.doctors.clear()
+        self.assertEqual(self.adam.medical_centers.all().count(), 0)
+        self.assertEqual(self.mersal.doctors.count(), 0)
