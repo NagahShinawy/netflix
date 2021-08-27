@@ -2,8 +2,15 @@ from django.contrib import admin
 
 from .models import Student, Course, Doctor, MedicalCenter, CourseGrade
 
-admin.site.register(Course)
 admin.site.register(CourseGrade)
+
+
+@admin.register(Course)
+class CourseModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "students")
+    # readonly_fields = ("id", "student__list_courses")  # todo: fix this
+    readonly_fields = ("id", "students")
+    search_fields = ("id", "title", "student__fname", "student__lname", "student__dob")
 
 
 @admin.register(Student)
