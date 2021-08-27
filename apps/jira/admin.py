@@ -5,6 +5,7 @@ from .models import Developer, Task, Tool
 class TaskTabularInline(admin.TabularInline):
     model = Task  # relationship many[many lines]
     extra = 2
+    fields = ("title", "desc")
 
 
 @admin.register(Task)
