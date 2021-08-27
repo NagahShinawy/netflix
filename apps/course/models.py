@@ -27,6 +27,24 @@ class Student(ModelRepresentationMixin, models.Model):
     def list_courses(self):
         return self.courses
 
+    def grades(self):
+        qs = CourseGrade.objects.filter(student=self)
+        if qs:
+            return [grade.to_pretty() for grade in qs]
+        return "-"
+
+
+class CourseGrade(models.Model):
+    value = models.PositiveIntegerField(default=0)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="course_grades")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,  related_name="grades")
+
+    def __str__(self):
+        return f"{self.id} - <{self.student} {self.course} {self.value}>"
+
+    def to_pretty(self):
+        return f"{self.course.title}({self.value})"
+
 
 class Doctor(ModelRepresentationMixin, models.Model):
     fname = models.CharField(max_length=256)

@@ -8,7 +8,8 @@ class DoctorCenterTestCaseMixin(TestCase):
         self.toronto = MedicalCenter.objects.create(name="Toronto Clinic")
         self.medical_centers = [self.mayo, self.toronto]
         self.john = Doctor.objects.create(fname="John")
-        self.john.medical_centers.set(self.medical_centers)
+        # self.john.medical_centers.set(self.medical_centers)
+        self.john.medical_centers.set(MedicalCenter.objects.all())
         self.john.save()
 
 
