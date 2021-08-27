@@ -15,6 +15,7 @@ class Task(models.Model):
 
 class Developer(models.Model):
     name = models.CharField(max_length=256)
+    tools = models.ManyToManyField("jira.Tool", related_name="developers", null=True, blank=True)
 
     def __str__(self):
         return self.name.title()
@@ -22,13 +23,15 @@ class Developer(models.Model):
     def tasks(self):
         return [task.to_pretty() for task in self.task.all()]
 
+    def tools_list(self):
+        return [tool for tool in self.tools.all()]
+
 
 class Tool(models.Model):
     name = models.CharField(max_length=256)
-    developer = models.ManyToManyField(Developer, related_name="tools", null=True, blank=True)
 
     def __str__(self):
         return self.name
 
-    def developers(self):
-        return [developer for developer in self.developer.all()]
+    def developers_list(self):
+        return [developer for developer in self.developers.all()]
