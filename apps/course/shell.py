@@ -16,6 +16,7 @@ def get_doctors_names():
 def get_centers_names():
     return MedicalCenter.objects.all().values("id", "name")
 
+
 """
 >>> from apps.course.shell import *
 >>> mina = Docotor.objects.get(id=5)
@@ -24,7 +25,6 @@ def get_centers_names():
 NameError: name 'Docotor' is not defined
 
 >>> mina = Doctor.objects.get(id=5)
-[DEBUG] [27/Aug/2021 10:02:24] in [C:\Users\Nagaj\AppData\Local\Programs\Python\Python37\lib\asyncio\selector_events.py/__init__:#58] [Using selector: SelectSelector]
 >>> mina
 <Doctor: 5-mina>
 >>> get_centers_for_doctor(mina)
@@ -55,5 +55,11 @@ AttributeError: 'Doctor' object has no attribute 'doctors'
 <QuerySet [<Doctor: 5-mina>]>
 >>> get_doctors_of_center(MedicalCenter.objects.get(id=2))
 <QuerySet [<Doctor: 1-mohammed>]>
+>>> 
+>>> get_doctors_names()
+<QuerySet [{'id': 1, 'fname': 'mohammed'}, {'id': 2, 'fname': 'ahmed'}, {'id': 3, 'fname': 'mahmoud'},
+{'id': 4, 'fname': 'karim'}, {'id': 5, 'fname': 'mina'}]>
+>>> get_centers_names()
+<QuerySet [{'id': 1, 'name': 'police hospital'}, {'id': 2, 'name': '57357'}, {'id': 3, 'name': 'mersal'}]>
 >>> 
 """
