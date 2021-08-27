@@ -7,6 +7,12 @@ class TaskTabularInline(admin.TabularInline):
     extra = 5
 
 
+class ToolTabularInline(admin.TabularInline):
+    # 'jira.Tool' has no ForeignKey to 'jira.Developer' fixed by 'Tool.developer.through'
+    model = Tool.developer.through  # relationship many[many lines]
+    extra = 5
+
+
 @admin.register(Task)
 class TaskModeAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "developer")
@@ -15,7 +21,7 @@ class TaskModeAdmin(admin.ModelAdmin):
 @admin.register(Developer)
 class DeveloperModelAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "tasks")
-    inlines = [TaskTabularInline]
+    inlines = [TaskTabularInline, ToolTabularInline]
 
 
 @admin.register(Tool)
