@@ -1,7 +1,9 @@
 from django.db import models
 
+# https://dev.to/sankalpjonna/using-abstract-models-in-django-1igi
 
 # ########### # ############ Abstract Models ############ ############ ############ ############ ############
+
 
 class Person(models.Model):
     name = models.CharField(max_length=256)
