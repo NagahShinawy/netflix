@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Developer, Task
+from .models import Developer, Task, Tool
 
 
 class TaskTabularInline(admin.TabularInline):
@@ -16,3 +16,8 @@ class TaskModeAdmin(admin.ModelAdmin):
 class DeveloperModelAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "tasks")
     inlines = [TaskTabularInline]
+
+
+@admin.register(Tool)
+class ToolModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "developers")

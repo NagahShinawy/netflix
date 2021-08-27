@@ -21,3 +21,11 @@ class Developer(models.Model):
 
     def tasks(self):
         return [task.to_pretty() for task in self.task.all()]
+
+
+class Tool(models.Model):
+    name = models.CharField(max_length=256)
+    developer = models.ManyToManyField(Developer, related_name="tools", null=True, blank=True)
+
+    def developers(self):
+        return [developer for developer in self.developer.all()]
