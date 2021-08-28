@@ -36,7 +36,7 @@ class DeveloperModelAdmin(admin.ModelAdmin):
 
 @admin.register(Project)
 class ProjectModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "pm")
+    list_display = ("id", "title", "pm", "developers_list")
 
 
 @admin.register(PM)

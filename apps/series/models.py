@@ -50,6 +50,10 @@ class PM(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=256)
     pm = models.ForeignKey(PM, on_delete=models.PROTECT, null=True, blank=True, related_name="projects")
+    developers = models.ManyToManyField("series.Developer", null=True, blank=True, related_name="developers")
+
+    def developers_list(self):
+        return [developer for developer in self.developers.all()]
     
     def __str__(self):
         return self.title
