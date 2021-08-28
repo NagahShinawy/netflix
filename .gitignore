@@ -129,10 +129,10 @@ dmypy.json
 .pyre/
 
 /.idea
+/apps/gcc/migrations
+/apps/video/migrations
 /apps/blog/migrations
 /apps/core/migrations
-/apps/gcc/migrations
 /apps/store/migrations
-/apps/video/migrations
 
 media/
