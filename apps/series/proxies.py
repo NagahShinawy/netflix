@@ -1,4 +1,4 @@
-from .models import Developer
+from .lean import Developer
 from .managers import BackendModelManager, FrontendModelManager, TeamLeadModelManager
 
 

@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Series, Season, Episode, Developer, PM, Project
+from .models import Series, Season, Episode
+from .lean import Developer, PM, Project
+
+
 from .proxies import (
     FastEditDeveloperProxyModel,
     BackendDeveloperProxyModel,
