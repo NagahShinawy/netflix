@@ -1,6 +1,11 @@
 from django.contrib import admin
 from .models import Series, Season, Episode, Developer, PM, Project
-from .proxies import FastEditDeveloperProxyModel, BackendDeveloperProxyModel, FrontDeveloperProxyModel, TeamLeadProxyModel
+from .proxies import (
+    FastEditDeveloperProxyModel,
+    BackendDeveloperProxyModel,
+    FrontDeveloperProxyModel,
+    TeamLeadProxyModel,
+)
 
 
 class SeasonTabularInline(admin.TabularInline):
@@ -69,10 +74,4 @@ class FrontendDeveloperProxyModelAdmin(admin.ModelAdmin):
 
 @admin.register(TeamLeadProxyModel)
 class TeamLeadDeveloperProxyModelAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "name",
-    )
-
-    # def get_queryset(self, request):
-    #     return Developer.objects.select_related("team_lead")
+    list_display = ("id", "name")

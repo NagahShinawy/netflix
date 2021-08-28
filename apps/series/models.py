@@ -82,3 +82,7 @@ class Developer(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def is_team_lead(self):
+        return self.pk == self.team_lead.pk
