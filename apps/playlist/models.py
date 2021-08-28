@@ -32,3 +32,16 @@ class Playlist(
 
         update_slug(instance=self)
         return super().save(*args, **kwargs)
+
+    def get_videos_ids(self):
+        return ", ".join([str(video[0]) for video in self.videos.all().values_list("id")])
+
+    def related_videos(self):
+        videos = self.videos.all().values_list("title")
+        videos_titles = [video[0] for video in videos]
+        if videos_titles:
+            return ". ".join([f"{counter}-{video}" for counter, video in enumerate(videos_titles, start=1)])
+        return "-"
+
+    def total_videos(self):
+        return self.videos.all().count()

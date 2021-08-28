@@ -46,7 +46,7 @@ class Video(
     playlist = models.ForeignKey(
         Playlist,
         on_delete=models.SET_NULL,
-        related_name="video",
+        related_name="videos",
         verbose_name=_("Playlist"),
         blank=True,
         null=True,
