@@ -6,3 +6,10 @@ class VideoStateOptions(models.TextChoices):
     DRAFT = "DR", "DRAFT"
     UNLISTED = "UN", "Unlisted"
     PRIVATE = "PR", "Private"
+
+
+class PlaylistTypes(models.TextChoices):
+    MOVIE = "MOV", "Movie"
+    SHOW = "TVS", "Show"
+    SEASON = "SEA", "Season"
+    PLAYLIST = "PLY", "Playlist"

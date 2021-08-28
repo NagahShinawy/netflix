@@ -1,4 +1,5 @@
 from django.db import models
+from apps.video.choices import PlaylistTypes
 
 # from django.utils.translation import gettext_lazy as _
 from apps.core.db.models import (
@@ -22,7 +23,7 @@ class Playlist(
     PublishedTimestamp,
     models.Model,
 ):
-
+    ply_type = models.CharField(max_length=3, choices=PlaylistTypes.choices, default=PlaylistTypes.MOVIE)
     objects = PlaylistManager()
 
     def __str__(self):

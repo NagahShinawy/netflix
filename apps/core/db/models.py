@@ -4,9 +4,9 @@ from .choices import StateOptions
 
 
 class TimestampMixin(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"), null=True, blank=True)
     updated = models.DateTimeField(
-        auto_now=True, verbose_name=_("Updated at")
+        auto_now=True, verbose_name=_("Updated at"), null=True, blank=True
     )  # last save
 
     class Meta:
