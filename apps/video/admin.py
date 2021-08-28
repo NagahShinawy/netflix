@@ -8,6 +8,7 @@ from .proxy import (
     UnlistedVideoProxy,
     PrivateVideoProxy,
 )
+from .models import Video, VideoProxy, FastEditVideoProxy, PublishedVideoProxy
 
 
 @admin.register(Video)  # table show
@@ -28,6 +29,8 @@ class VideoModelAdmin(admin.ModelAdmin):
         "updated",
     )
     list_display_links = ("id", "video_id", "title")
+    list_per_page = 10
+
     list_editable = ("playlist",)
     list_filter = ("is_active", "state")
     search_fields = (
@@ -50,8 +53,26 @@ class VideoModelAdmin(admin.ModelAdmin):
 class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
     save_on_top = True
 
+class FastEditVideoProxyModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "video_id", "title", "slug", "is_published")
+    list_display_links = ("id", "video_id")
+    list_editable = ("title", "slug", "is_published")
+    list_filter = ("title", "slug")
+    list_per_page = 3
     class Meta:
         model = PublishedVideoProxy  # optional
+
+
+@admin.register(PublishedVideoProxy)
+class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "title")
+    list_display_links = ("id", "title")
+
+
+admin.site.register(VideoProxy)  # basic  video show
+admin.site.register(
+    FastEditVideoProxy, FastEditVideoProxyModelAdmin
+)  # editable video show
 
     def get_queryset(self, request):
         return PublishedVideoProxy.objects.filter(is_active=True)
