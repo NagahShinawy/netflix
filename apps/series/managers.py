@@ -20,11 +20,12 @@ class FrontendModelManager(models.Manager):
         )
 
 
-# todo: how to filter developers to get team lead
-# class TeamLeadModelManager(models.Manager):
-#     def get_queryset(self):
-#         return (
-#             super(TeamLeadModelManager, self)
-#             .get_queryset()
-#             .filter(team_lead=self)
-#         )
+class TeamLeadModelManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super(TeamLeadModelManager, self)
+            .get_queryset()
+            .select_related("team_lead")
+            .order_by("team_lead")
+            .distinct("team_lead")
+        )

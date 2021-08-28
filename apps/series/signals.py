@@ -3,6 +3,7 @@ from django.dispatch import receiver
 from .models import Developer
 
 
+# todo: fix this , not working
 @receiver(pre_save, sender=Developer)
 def update_team_lead(sender, instance, **kwargs):
     if instance.pk == instance.team_lead.pk:

@@ -1,5 +1,5 @@
 from .models import Developer
-from .managers import BackendModelManager, FrontendModelManager
+from .managers import BackendModelManager, FrontendModelManager, TeamLeadModelManager
 
 
 class FastEditDeveloperProxyModel(Developer):
@@ -10,7 +10,6 @@ class FastEditDeveloperProxyModel(Developer):
 
 
 class BackendDeveloperProxyModel(Developer):
-
     objects = BackendModelManager()
 
     class Meta:
@@ -20,7 +19,6 @@ class BackendDeveloperProxyModel(Developer):
 
 
 class FrontDeveloperProxyModel(Developer):
-
     objects = FrontendModelManager()
 
     class Meta:
@@ -30,13 +28,9 @@ class FrontDeveloperProxyModel(Developer):
 
 
 class TeamLeadProxyModel(Developer):
+    objects = TeamLeadModelManager()
+
     class Meta:
         proxy = True
         verbose_name_plural = "Team Lead"
         verbose_name = "Developer"
-
-    # todo: how to get team lead list
-    # def tl_list(self):
-    #     tl_ids = [dev.team_lead_id for dev in Developer.objects.all()]
-    #     # return Developer.objects.filter(self.team_lead)
-    #     return Developer.objects.filter(id__in=tl_ids)
