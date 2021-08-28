@@ -20,6 +20,7 @@ class VideoModelAdmin(admin.ModelAdmin):
         "title",
         "slug",
         "year",
+        "playlist",
         "is_published",
         "is_active",
         "published_timestamp",
@@ -27,11 +28,20 @@ class VideoModelAdmin(admin.ModelAdmin):
         "updated",
     )
     list_display_links = ("id", "video_id", "title")
+    list_editable = ("playlist",)
     list_filter = ("is_active", "state")
-    search_fields = ("id", "title", "description")
+    search_fields = (
+        "id",
+        "title",
+        "description",
+        "playlist__title",
+        "playlist__description",
+    )
     readonly_fields = ["id", "is_published", "published_timestamp"]
     list_per_page = 10
     save_on_top = True  # btn save on top
+
+    list_select_related = ("playlist",)
 
     # def active(self, video, *args, **kwargs):  # Video Model instance
     #     return video.is_published
