@@ -1,4 +1,5 @@
 from django.db import models
+from .choices import CategoryChoices
 
 
 class TVShowModelMixin(models.Model):
@@ -15,7 +16,10 @@ class TVShowModelMixin(models.Model):
 
 
 class Series(TVShowModelMixin):
-    pass
+    category = models.CharField(max_length=2, choices=CategoryChoices.choices, default=CategoryChoices.COMEDY)
+
+    def seasons_list(self):
+        return [season.title for season in self.seasons.all()]
 
 
 class Season(TVShowModelMixin):

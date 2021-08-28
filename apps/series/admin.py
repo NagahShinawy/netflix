@@ -14,7 +14,7 @@ class EpisodeTabularInline(admin.TabularInline):
 
 @admin.register(Series)
 class SeriesModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "title")
+    list_display = ("id", "title", "seasons_list")
     inlines = (SeasonTabularInline, )
 
 
@@ -24,7 +24,9 @@ class SeasonModelAdmin(admin.ModelAdmin):
     inlines = (EpisodeTabularInline, )
 
 
-
+@admin.register(Episode)
+class EpisodeModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "title")
 
 
 
