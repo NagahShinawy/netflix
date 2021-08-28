@@ -37,15 +37,6 @@ class Video(
         MIN = 1930
         max_ = datetime.datetime.now().year
 
-class Video(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField(max_length=225, null=True, blank=True)
-    slug = models.SlugField(null=True, blank=True)
-    video_id = models.CharField(max_length=225)
-    is_published = models.BooleanField(default=False)
-    objects = models.manager
-    video_id = models.CharField(max_length=225, verbose_name=_("Media ID"), unique=True)
-
     year = models.PositiveIntegerField(
         null=True,
         blank=True,
@@ -60,6 +51,11 @@ class Video(models.Model):
         null=True,
     )  # frst = Playlist.objects.first()  ==> frst.video.all()  # 'video' is related_name
     objects = VideoManager()
+
+    class Meta:
+        ordering = ["-id"]
+        verbose_name = "Movie Video"  # add
+        verbose_name_plural = "Table Show Videos"  #
 
     def __str__(self):
         id_ = self.id
@@ -89,39 +85,3 @@ class Video(models.Model):
             raise ValidationError(DuplicatedVideoTitle.message)
 
         super(Video, self).clean()
-
-    class Meta:
-        ordering = ["-id"]
-        verbose_name = "Movie Video"  # add
-        verbose_name_plural = "Table Show Videos"  #
-
-
-class VideoProxy(Video):
-    class Meta:
-        proxy = True  # not created db table. it just proxy [check proxy-model branch]
-        verbose_name = "Movie Video"  # add
-        verbose_name_plural = "Basic Video Title Show"  # left side show
-
-    def __str__(self):
-        return f"[{self.title}]"
-
-
-class FastEditVideoProxy(Video):
-    class Meta:
-        proxy = True  # not created db table. it just proxy [check proxy-model branch]
-        ordering = ["title"]
-        verbose_name = "Editable Video"  # add btn
-        verbose_name_plural = "Fast Edit Videos"  # left side view
-
-
-class PublishedVideoProxy(Video):
-
-    objects = PublishedVideoManager()
-
-    class Meta:
-        proxy = True
-        verbose_name = "Published Video"
-        verbose_name_plural = "Published Videos"
-        ordering = ["id"]
-        verbose_name = "Video"  # add
-        verbose_name_plural = "Table Videos"  #

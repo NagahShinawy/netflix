@@ -1,14 +1,13 @@
 from django.contrib import admin
 
-from .models import Video
 from .proxy import (
-    PublishedVideoProxy,
     NotPublishedVideoProxy,
     DraftVideoProxy,
     UnlistedVideoProxy,
     PrivateVideoProxy,
 )
-from .models import Video, VideoProxy, FastEditVideoProxy, PublishedVideoProxy
+from .models import Video
+from .proxy import VideoProxy, FastEditVideoProxy, PublishedVideoProxy
 
 
 @admin.register(Video)  # table show
@@ -41,7 +40,6 @@ class VideoModelAdmin(admin.ModelAdmin):
         "playlist__description",
     )
     readonly_fields = ["id", "is_published", "published_timestamp"]
-    list_per_page = 10
     save_on_top = True  # btn save on top
 
     list_select_related = ("playlist",)
@@ -53,12 +51,14 @@ class VideoModelAdmin(admin.ModelAdmin):
 class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
     save_on_top = True
 
+
 class FastEditVideoProxyModelAdmin(admin.ModelAdmin):
     list_display = ("id", "video_id", "title", "slug", "is_published")
     list_display_links = ("id", "video_id")
     list_editable = ("title", "slug", "is_published")
     list_filter = ("title", "slug")
     list_per_page = 3
+
     class Meta:
         model = PublishedVideoProxy  # optional
 
@@ -73,9 +73,6 @@ admin.site.register(VideoProxy)  # basic  video show
 admin.site.register(
     FastEditVideoProxy, FastEditVideoProxyModelAdmin
 )  # editable video show
-
-    def get_queryset(self, request):
-        return PublishedVideoProxy.objects.filter(is_active=True)
 
 
 class NotPublishedVideoProxyModelAdmin(admin.ModelAdmin):
