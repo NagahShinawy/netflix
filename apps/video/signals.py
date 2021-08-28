@@ -23,6 +23,13 @@ def get_video_representation(instance):
     return video
 
 
+def update_slug(instance):
+    video = get_video_representation(instance)
+    if instance.slug is None:
+        instance.slug = slugify(instance.title)
+        logger.info(f"Update 'slug' for video <{video}> to <{instance.slug}>")
+
+
 @receiver(pre_save, sender=Video, dispatch_uid="update_published_timestamp")
 def update_published_timestamp(sender, instance, **kwargs):
     video = get_video_representation(instance)
@@ -41,16 +48,41 @@ def update_published_timestamp(sender, instance, **kwargs):
         instance.is_active = False
 
 
-@receiver(pre_save, sender=Video, dispatch_uid="update_slug")
-@receiver(pre_save, sender=PublishedVideoProxy, dispatch_uid="update_slug_published")
-@receiver(pre_save, sender=NotPublishedVideoProxy, dispatch_uid="update_slug_not_published")
-@receiver(pre_save, sender=DraftVideoProxy, dispatch_uid="update_slug_draft")
-@receiver(pre_save, sender=UnlistedVideoProxy, dispatch_uid="update_slug_unlisted")
-@receiver(pre_save, sender=PrivateVideoProxy, dispatch_uid="update_slug_private")
-@receiver(pre_save, sender=VideoProxy, dispatch_uid="update_slug_video_proxy")
+@receiver(pre_save, sender=Video, dispatch_uid="update_video_slug")
+def update_video_slug(sender, instance, **kwargs):
+    update_slug(instance)
+
+
 @receiver(pre_save, sender=FastEditVideoProxy, dispatch_uid="update_slug_fast_edit")
-def update_slug(sender, instance, **kwargs):
-    video = get_video_representation(instance)
-    if instance.slug is None:
-        instance.slug = slugify(instance.title)
-        logger.info(f"Update 'slug' for video <{video}> to <{instance.slug}>")
+def update_slug_fast_edit_model(sender, instance, **kwargs):
+    update_slug(instance)
+
+
+@receiver(pre_save, sender=VideoProxy, dispatch_uid="update_slug_video_proxy")
+def update_slug_video_proxy(sender, instance, **kwargs):
+    update_slug(instance)
+
+
+@receiver(pre_save, sender=PrivateVideoProxy, dispatch_uid="update_slug_private")
+def update_slug_private_video_proxy(sender, instance, **kwargs):
+    update_slug(instance)
+
+
+@receiver(pre_save, sender=UnlistedVideoProxy, dispatch_uid="update_slug_unlisted")
+def update_slug_unlisted_video_proxy(sender, instance, **kwargs):
+    update_slug(instance)
+
+
+@receiver(pre_save, sender=DraftVideoProxy, dispatch_uid="update_slug_draft")
+def update_slug_draft_video_proxy(sender, instance, **kwargs):
+    update_slug(instance)
+
+
+@receiver(pre_save, sender=NotPublishedVideoProxy, dispatch_uid="update_slug_not_published")
+def update_slug_not_published_video_proxy(sender, instance, **kwargs):
+    update_slug(instance)
+
+
+@receiver(pre_save, sender=PublishedVideoProxy, dispatch_uid="update_slug_published")
+def update_slug_published_video_proxy(sender, instance, **kwargs):
+    update_slug(instance)
