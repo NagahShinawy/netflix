@@ -1,5 +1,5 @@
 from django.db import models
-from .choices import CategoryChoices
+from .choices import CategoryChoices, PositionChoices
 
 
 class TVShowModelMixin(models.Model):
@@ -16,7 +16,9 @@ class TVShowModelMixin(models.Model):
 
 
 class Series(TVShowModelMixin):
-    category = models.CharField(max_length=2, choices=CategoryChoices.choices, default=CategoryChoices.COMEDY)
+    category = models.CharField(
+        max_length=2, choices=CategoryChoices.choices, default=CategoryChoices.COMEDY
+    )
 
     def seasons_list(self):
         return [season.title for season in self.seasons.all()]
@@ -27,4 +29,23 @@ class Season(TVShowModelMixin):
 
 
 class Episode(TVShowModelMixin):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE, related_name="episodes", null=True, blank=True)
+    season = models.ForeignKey(
+        Season, on_delete=models.CASCADE, related_name="episodes", null=True, blank=True
+    )
+
+
+class Developer(models.Model):
+    name = models.CharField(max_length=256, null=True, blank=True)
+    position = models.CharField(
+        max_length=2,
+        choices=PositionChoices.choices,
+        null=True,
+        blank=True,
+        default=PositionChoices.BACKEND,
+    )
+    team_lead = models.ForeignKey(
+        "self", null=True, blank=True, on_delete=models.PROTECT
+    )
+
+    def __str__(self):
+        return self.name

@@ -6,3 +6,8 @@ class CategoryChoices(models.TextChoices):
     ROMANTIC = "ro", "Romantic"
     ACTION = "ac", "Action"
     DRAMA = "dr", "Drama"
+
+
+class PositionChoices(models.TextChoices):
+    UI = "ui", "Front end"
+    BACKEND = "be", "Backend"
