@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Series, Season, Episode, Developer
+from .models import Series, Season, Episode, Developer, PM, Project
 
 
 class SeasonTabularInline(admin.TabularInline):
@@ -32,3 +32,13 @@ class EpisodeModelAdmin(admin.ModelAdmin):
 @admin.register(Developer)
 class DeveloperModelAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "position", "team_lead")
+
+
+@admin.register(Project)
+class ProjectModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "pm")
+
+
+@admin.register(PM)
+class PMModelAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "projects_list", "developers_list")
