@@ -5,7 +5,9 @@ from .mixin import ModelRepMixin
 class Task(ModelRepMixin, models.Model):
     title = models.CharField(max_length=256)
     created = models.DateTimeField(auto_now_add=True)
-    developer = models.ForeignKey("jira.Developer", on_delete=models.PROTECT, related_name="task")
+    developer = models.ForeignKey(
+        "jira.Developer", on_delete=models.PROTECT, related_name="task"
+    )
     desc = models.CharField(max_length=256, blank=True, null=True)
 
     def __str__(self):
@@ -17,7 +19,9 @@ class Task(ModelRepMixin, models.Model):
 
 class Developer(ModelRepMixin, models.Model):
     name = models.CharField(max_length=256)
-    tools = models.ManyToManyField("jira.Tool", related_name="developers", null=True, blank=True)
+    tools = models.ManyToManyField(
+        "jira.Tool", related_name="developers", null=True, blank=True
+    )
 
     def __str__(self):
         return self.name.title()

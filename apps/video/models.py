@@ -27,7 +27,9 @@ class Video(models.Model):
     slug = models.SlugField(null=True, blank=True, verbose_name=_("Slug"))
     video_id = models.CharField(max_length=225, verbose_name=_("Media ID"), unique=True)
     is_active = models.BooleanField(default=False, verbose_name=_("Is Active"))
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+    created = models.DateTimeField(
+        auto_now_add=True, verbose_name=_("Created at"), null=True, blank=True
+    )
     updated = models.DateTimeField(
         auto_now=True, verbose_name=_("Updated at")
     )  # last save

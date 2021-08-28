@@ -79,10 +79,7 @@ class Developer(models.Model):
     pm = models.ForeignKey(
         PM, on_delete=models.PROTECT, null=True, blank=True, related_name="developers"
     )
+    is_tl = models.BooleanField(default=False, editable=False)
 
     def __str__(self):
         return self.name
-
-    @property
-    def is_team_lead(self):
-        return self.pk == self.team_lead.pk

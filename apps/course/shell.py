@@ -32,6 +32,8 @@ def get_centers_sorted_by_doctors_ids():
 
 def get_centers_sorted_by_doctors_names():
     return MedicalCenter.objects.all().order_by("doctors__fname")
+
+
 """
 >>> from apps.course.shell import *
 >>> mina = Docotor.objects.get(id=5)

@@ -42,8 +42,10 @@ class Student(ModelRepresentationMixin, models.Model):
 
 class CourseGrade(models.Model):
     value = models.PositiveIntegerField(default=0)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="course_grades")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE,  related_name="grades")
+    student = models.ForeignKey(
+        Student, on_delete=models.CASCADE, related_name="course_grades"
+    )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="grades")
 
     def __str__(self):
         return f"{self.id} - <{self.student} {self.course} {self.value}>"

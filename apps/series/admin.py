@@ -74,4 +74,4 @@ class FrontendDeveloperProxyModelAdmin(admin.ModelAdmin):
 
 @admin.register(TeamLeadProxyModel)
 class TeamLeadDeveloperProxyModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = ("id", "tl_list")
