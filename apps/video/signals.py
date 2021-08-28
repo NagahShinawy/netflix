@@ -5,7 +5,15 @@ from django.utils import timezone
 from django.utils.text import slugify
 from .models import Video
 from .choices import VideoStateOptions
-
+from .proxy import (
+    PublishedVideoProxy,
+    NotPublishedVideoProxy,
+    PrivateVideoProxy,
+    FastEditVideoProxy,
+    UnlistedVideoProxy,
+    DraftVideoProxy,
+    VideoProxy,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +42,13 @@ def update_published_timestamp(sender, instance, **kwargs):
 
 
 @receiver(pre_save, sender=Video, dispatch_uid="update_slug")
+@receiver(pre_save, sender=PublishedVideoProxy, dispatch_uid="update_slug_published")
+@receiver(pre_save, sender=NotPublishedVideoProxy, dispatch_uid="update_slug_not_published")
+@receiver(pre_save, sender=DraftVideoProxy, dispatch_uid="update_slug_draft")
+@receiver(pre_save, sender=UnlistedVideoProxy, dispatch_uid="update_slug_unlisted")
+@receiver(pre_save, sender=PrivateVideoProxy, dispatch_uid="update_slug_private")
+@receiver(pre_save, sender=VideoProxy, dispatch_uid="update_slug_video_proxy")
+@receiver(pre_save, sender=FastEditVideoProxy, dispatch_uid="update_slug_fast_edit")
 def update_slug(sender, instance, **kwargs):
     video = get_video_representation(instance)
     if instance.slug is None:
