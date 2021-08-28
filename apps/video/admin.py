@@ -15,7 +15,6 @@ class VideoModelAdmin(admin.ModelAdmin):
     date_hierarchy = "created"  # date filtration
     list_display = (
         "id",
-        "video_id",
         "state",
         "title",
         "slug",
@@ -27,7 +26,7 @@ class VideoModelAdmin(admin.ModelAdmin):
         "created",
         "updated",
     )
-    list_display_links = ("id", "video_id", "title")
+    list_display_links = ("id", "title")
     list_per_page = 10
 
     list_editable = ("playlist",)
@@ -53,9 +52,9 @@ class PublishedVideoProxyModelAdmin(admin.ModelAdmin):
 
 
 class FastEditVideoProxyModelAdmin(admin.ModelAdmin):
-    list_display = ("id", "video_id", "title", "slug", "is_published")
-    list_display_links = ("id", "video_id")
-    list_editable = ("title", "slug", "is_published")
+    list_display = ("id", "title", "slug", "is_published")
+    list_display_links = ("id", )
+    list_editable = ("title", "slug", )
     list_filter = ("title", "slug")
     list_per_page = 3
 
@@ -109,7 +108,7 @@ class PrivateVideoProxyModelAdmin(admin.ModelAdmin):
         return DraftVideoProxy.objects.all().private()
 
 
-admin.site.register(PublishedVideoProxy, PublishedVideoProxyModelAdmin)  # basic show
+# admin.site.register(PublishedVideoProxy, PublishedVideoProxyModelAdmin)  # basic show
 admin.site.register(
     NotPublishedVideoProxy, NotPublishedVideoProxyModelAdmin
 )  # basic show
