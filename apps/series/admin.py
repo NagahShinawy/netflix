@@ -72,7 +72,6 @@ class FrontendDeveloperProxyModelAdmin(admin.ModelAdmin):
     )
 
 
-# todo: how to implement this
 @admin.register(TeamLeadProxyModel)
 class TeamLeadDeveloperProxyModelAdmin(admin.ModelAdmin):
     list_display = ("id", "team_lead")
