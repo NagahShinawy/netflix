@@ -1,7 +1,10 @@
 from .models import Video
+from apps.core.managers import PublishedVideoManager
 
 
 class PublishedVideoProxy(Video):
+    objects = PublishedVideoManager()
+
     class Meta:
         proxy = True  # not created db table. it just proxy
         verbose_name = "Video"
