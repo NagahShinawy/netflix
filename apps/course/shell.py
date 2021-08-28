@@ -13,10 +13,25 @@ def get_doctors_names():
     return Doctor.objects.all().values("id", "fname")
 
 
+def doctors_list():
+    return Doctor.objects.all().order_by("-id")
+
+
+def centers_list():
+    return MedicalCenter.objects.all().order_by("-id")
+
+
 def get_centers_names():
     return MedicalCenter.objects.all().values("id", "name")
 
 
+# order by using m2m relationship
+def get_centers_sorted_by_doctors_ids():
+    return MedicalCenter.objects.all().order_by("doctors__id")
+
+
+def get_centers_sorted_by_doctors_names():
+    return MedicalCenter.objects.all().order_by("doctors__fname")
 """
 >>> from apps.course.shell import *
 >>> mina = Docotor.objects.get(id=5)

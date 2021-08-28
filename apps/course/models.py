@@ -14,6 +14,9 @@ class Course(ModelRepresentationMixin, models.Model):
     def __str__(self):
         return f"{self.id}-{self.title}"
 
+    def students(self):
+        return [student.to_pretty() for student in self.student.all()]
+
 
 class Student(ModelRepresentationMixin, models.Model):
     fname = models.CharField(max_length=256, verbose_name="First Name")
@@ -23,6 +26,9 @@ class Student(ModelRepresentationMixin, models.Model):
 
     def __str__(self):
         return f"{self.id}-{self.fname} {self.lname}".title()
+
+    def to_pretty(self):
+        return f"{self.fname}{self.lname}({self.pk})"
 
     def list_courses(self):
         return self.courses
