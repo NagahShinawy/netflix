@@ -1,6 +1,11 @@
+import uuid
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .choices import StateOptions
+
+
+class UUIDMixin(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True)
 
 
 class TimestampMixin(models.Model):
